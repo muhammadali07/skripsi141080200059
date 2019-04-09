@@ -1,0 +1,31 @@
+<div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+  <div class="menu_section">
+    <h3>General</h3>
+    <ul class="nav side-menu">
+    {% if session.logged_in == (session['level']==1) %}
+      <li><a href="/beranda_admin"><i class="fa fa-home"></i> Beranda <span class="fa fa-chevron-down"></span></a></li>
+      <li><a><i class="fa fa-edit"></i> Data Siswa <span class="fa fa-chevron-down"></span></a>
+        <ul class="nav child_menu">
+          <li><a href="/data_siswa_baru">Pendatar Siswa Baru</a></li>
+          <li><a href="/siswa_baru">Data Siswa Baru</a></li>
+        </ul>
+        </li>
+        {% else %}
+        <li><a href="/beranda"><i class="fa fa-home"></i> Beranda <span class="fa fa-chevron-down"></span></a></li>
+        <li><a><i class="fa fa-edit"></i> Data Siswa <span class="fa fa-chevron-down"></span></a>
+        <ul class="nav child_menu">
+          <li><a href="#">Data Absensi</a></li>
+          <li><a href="/data_nilai">Data Nilai</a></li>
+          <li><a href="#">Data Kegiatan</a></li>
+        </ul>
+        </li>
+      <li><a><i class="fa fa-desktop"></i> Informasi <span class="fa fa-chevron-down"></span></a>
+        <ul class="nav child_menu">
+          <li><a href="/galery"> Gallery</a></li>
+          <li><a href="calendar.html">Calendar</a></li>
+        </ul>
+      </li>
+      {% endif %}
+    </ul>
+  </div>
+</div>
