@@ -11,6 +11,8 @@ config = {
   'unix_socket': '/Applications/MAMP/tmp/mysql/mysql.sock',
   'database': 'myflaskapp',
   'raise_on_warnings': True,
+  'buffered':True,
+  'cursorclass':DictCursor
 }
 
 db = mysql.connector.connect(**config)
@@ -20,13 +22,13 @@ def index():
    if 'nik' in session:
       nik_session = session['nik']
       if session['level'] == 1:
-         cur = db.cursor(MySQLdb.cursors.DictCursor)
+         cur = db.cursor(mysql.connector.cursors.DictCursor)
          cur.execute("SELECT * FROM users WHERE nik=%s",
                      [nik_session])
          rows = cur.fetchall()
          return render_template('add_pengajuan.html')
       elif session['level'] == 2:
-         cur = db.cursor(MySQLdb.cursors.DictCursor)
+         cur = db.cursor(mysql.connector.cursors.DictCursor)
          cur.execute("SELECT * FROM users WHERE nik=%s",
                      [nik_session])
          rows = cur.fetchall()
@@ -45,7 +47,7 @@ def add_pengajuan():
       abstrak = request.form['abstrak']
       # create cursor
       #cur = db.cursor()
-      cur = db.cursor(MySQLdb.cursors.DictCursor)
+      cur = db.cursor(mysql.connector.cursors.DictCursor)
       # execute query
 
       cur.execute("INSERT INTO pengajuan (judul, kaprodi, dosbim, username, abstrak, nik) VALUES (%s, %s, %s, %s, %s, %s)",(judul, kaprodi, dosbim, session['nik'], abstrak, 2))
@@ -54,7 +56,7 @@ def add_pengajuan():
 
       cur.close()
 
-      cur = db.cursor(MySQLdb.cursors.DictCursor)
+      cur = db.cursor(mysql.connector.cursors.DictCursor)
 
       nik = session['nik']
       result=cur.execute("SELECT * FROM pengajuan WHERE nik = %s",[nik])
@@ -76,6 +78,16 @@ def add_pengajuan():
       return redirect(url_for('add_pengajuan'))
    return render_template('add_pengajuan.html')
 
+def is_logged_in(f):
+   @wraps(f)
+   def wrap(*args, **kwargs):
+      if 'logged_in' in session:
+         return f(*args, **kwargs)
+      else:
+         flash('Unauthorized, Please Log In', 'danger')
+         return redirect(url_for('login'))
+   return wrap
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
    if request.method == 'POST':
@@ -83,7 +95,7 @@ def login():
       nik = request.form['nik']
       password_candidate = request.form['password']
       # Create Cursor
-      cur = db.cursor(MySQLdb.cursors.DictCursor)
+      cur = db.cursor(mysql.connector.cursors.DictCursor)
 
       # Get user by username
       result = cur.execute(
@@ -124,7 +136,7 @@ def register():
       password = sha256_crypt.encrypt(str(request.form['password']))
 
       # create cursor
-      cur = db.cursor()
+      cur = db.cursor(mysql.connector.cursors.DictCursor)
       # cur = db.cursor(MySQLdb.cursors.DictCursor)
       # execute query
       cur.execute("INSERT INTO users (name, NIK, username, password, level) VALUES (%s, %s, %s, %s, %s)",
@@ -139,7 +151,7 @@ def register():
       flash(' you are registed and you can Log in', 'success')
 
       return redirect(url_for('login'))
-   return render_template('register.html')
+   return render_template('login.html')
 
 
 app.secret_key = 'secret123'
