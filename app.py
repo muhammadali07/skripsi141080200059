@@ -1,6 +1,8 @@
 from flask import Flask, render_template, flash, redirect, url_for, session, request, logging
+from wtforms import Form, StringField, TextAreaField, PasswordField, validators
 import mysql.connector
 from passlib.hash import sha256_crypt
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'jsbcfsbfjefebw237u3gdbdc'
@@ -11,8 +13,6 @@ config = {
   'unix_socket': '/Applications/MAMP/tmp/mysql/mysql.sock',
   'database': 'myflaskapp',
   'raise_on_warnings': True,
-  'buffered':True,
-  'cursorclass':DictCursor
 }
 
 db = mysql.connector.connect(**config)
@@ -22,13 +22,13 @@ def index():
    if 'nik' in session:
       nik_session = session['nik']
       if session['level'] == 1:
-         cur = db.cursor(mysql.connector.cursors.DictCursor)
+         cur = db.cursor(buffered=True)
          cur.execute("SELECT * FROM users WHERE nik=%s",
                      [nik_session])
          rows = cur.fetchall()
          return render_template('add_pengajuan.html')
       elif session['level'] == 2:
-         cur = db.cursor(mysql.connector.cursors.DictCursor)
+         cur = db.cursor(buffered=True)
          cur.execute("SELECT * FROM users WHERE nik=%s",
                      [nik_session])
          rows = cur.fetchall()
@@ -46,8 +46,7 @@ def add_pengajuan():
       dosbim = request.form['dosbim']
       abstrak = request.form['abstrak']
       # create cursor
-      #cur = db.cursor()
-      cur = db.cursor(mysql.connector.cursors.DictCursor)
+      cur = db.cursor(buffered=True)
       # execute query
 
       cur.execute("INSERT INTO pengajuan (judul, kaprodi, dosbim, username, abstrak, nik) VALUES (%s, %s, %s, %s, %s, %s)",(judul, kaprodi, dosbim, session['nik'], abstrak, 2))
@@ -56,7 +55,7 @@ def add_pengajuan():
 
       cur.close()
 
-      cur = db.cursor(mysql.connector.cursors.DictCursor)
+      cur = db.cursor(buffered=True)
 
       nik = session['nik']
       result=cur.execute("SELECT * FROM pengajuan WHERE nik = %s",[nik])
@@ -93,9 +92,10 @@ def login():
    if request.method == 'POST':
       # Get Form Field
       nik = request.form['nik']
-      password_candidate = request.form['password']
+      # password_candidate = request.form['password']
+      password = request.form['password']
       # Create Cursor
-      cur = db.cursor(mysql.connector.cursors.DictCursor)
+      cur = db.cursor(buffered=True)
 
       # Get user by username
       result = cur.execute(
@@ -135,9 +135,10 @@ def register():
       username = request.form['name']
       password = sha256_crypt.encrypt(str(request.form['password']))
 
+
       # create cursor
-      cur = db.cursor(mysql.connector.cursors.DictCursor)
-      # cur = db.cursor(MySQLdb.cursors.DictCursor)
+      cur = db.cursor(buffered=True)
+
       # execute query
       cur.execute("INSERT INTO users (name, NIK, username, password, level) VALUES (%s, %s, %s, %s, %s)",
                   (name, nik, username, password, 2))

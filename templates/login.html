@@ -2,10 +2,10 @@
 {% block title %}<link rel="icon" type="image/gif/png" href="https://pkm.umsida.ac.id/image/logo.png">{% endblock %}
 {% block body %}
 {% from "includes/_formhelpers.html" import render_field %}
-{% include 'includes/_messages.html' %}
 <div class="materialContainer">
   <form action="{{url_for('login')}}" method="POST" accept-charset="utf-8" enctype="multipart/form-data">
     <div class="box">
+      {% include 'includes/_messages.html' %}
       <div class="title">LOGIN</div>
       <div class="input">
         <label for="username">NIM</label>
@@ -28,6 +28,7 @@
   <form action="{{url_for('register')}}" method="POST" accept-charset="utf-8" enctype="multipart/form-data">   <div class="overbox">
       <div class="material-button alt-2"><span class="shape"></span></div>
       <div class="title">REGISTER</div>
+      {% include 'includes/_messages.html' %}
       <div class="input">
          <label for="regnik">Username</label>
          <input type="text" name="name" id="regnik" required="">
