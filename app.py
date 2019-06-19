@@ -92,36 +92,39 @@ def login():
    if request.method == 'POST':
       # Get Form Field
       nik = request.form['nik']
-      # password_candidate = request.form['password']
-      password = request.form['password']
+      password_candidate = request.form['password']
+      # password = request.form['password']
       # Create Cursor
       cur = db.cursor(buffered=True)
 
       # Get user by username
-      result = cur.execute(
-          "SELECT password, level FROM users WHERE nik = %s", [nik])
+      sSql = ''' SELECT nik, password, level FROM users WHERE nik = '{0}' '''.format(nik,)
+      result = cur.execute(sSql)
+      data = cur.fetchone()
 
-      if result > 0:
+      if data :
          # Get stored hash
-         data = cur.fetchone()
-         password = data['password']
-         level = data['level']
+         qNik = data[0]
+         qPassword = data[1]
+         qLvel = data[2]
          # Compare Passwords
-         if sha256_crypt.verify(password_candidate, password):
+
+         if sha256_crypt.verify(password_candidate, qPassword):
             # Passed
             session['logged_in'] = True
-            session['nik'] = nik
-            session['level'] = level
+            session['nik'] = qNik
+            session['level'] = qLvel
 
             flash('you are now logged', 'success')
             return redirect(url_for('index'))
-         else:
-            error = 'Invalid Log In'
-            return render_template('login.html', error=error)
+         else :
+           error = 'Invalid Password'
+           return render_template('login.html', error=error)
+
          # close connection
          cur.close()
       else:
-         error = 'Username nor found'
+         error = 'Username not found'
 
          return render_template('login.html', error=error)
    return render_template('login.html')
