@@ -1,10 +1,34 @@
 {% extends 'layout.html' %}
 {% block body %}
-<div class="card-header">
+<div class="container-fluid">
   <div class="heading-elements">
-    <ul class="list-inline mb-0">
-      <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
-    </ul>
+    <div class="container-fluid">
+      <form action="/add_pengajuan" method="post">
+        <div class="form-group">
+          <label for="exampleInputEmail1">Judul Tugas Akhir</label>
+          <input type="text" name="judul" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Masukkan Judul Tugas Akhir" required="">
+        </div>
+        <div class="form-group">
+          <label for="exampleFormControlSelect1">Pilih Dosen Pembimbing</label>
+          <select name="dosbim" class="form-control" id="exampleFormControlSelect1" required="">
+            <option>Arief Senja, S. Kom,. . Kom</option>
+            <option>Irwan A. Kautsar. S. Kom,. M. Kom,. Ph.D</option>
+            <option>Dr. Hindarto ST,.MT</option>
+            <option>A'syiari,ST,. MT.</option>
+            <option>Cindy Cahyaning Astuti., S.Si., M.Si.</option>
+          </select>
+        </div>
+        <!-- <div class="form-group">
+          <label for="exampleInputPassword1">Unggah Berkas</label>
+          <input type="file" name="berkas" class="form-control" id="exampleInputPassword1" placeholder="Password">
+        </div> -->
+        <div class="form-group">
+          <label for="exampleFormControlTextarea1">Sinopsis Tugas Akhir</label>
+          <textarea name="sinopsis" class="form-control" id="exampleFormControlTextarea1" rows="3" required=""></textarea>
+        </div>
+        <button type="submit" class="btn round btn-success mr-1 btn-glow">Ajukan Judul <i class="ft-plus"></i></button>
+      </form>
+    </div>
   </div>
 </div>
 {% endblock %}

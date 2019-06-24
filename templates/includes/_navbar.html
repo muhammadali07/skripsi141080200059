@@ -1,31 +1,15 @@
-<div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
-  <div class="menu_section">
-    <h3>General</h3>
-    <ul class="nav side-menu">
-    {% if session.logged_in == (session['level']==1) %}
-      <li><a href="/beranda_admin"><i class="fa fa-home"></i> Beranda <span class="fa fa-chevron-down"></span></a></li>
-      <li><a><i class="fa fa-edit"></i> Data Siswa <span class="fa fa-chevron-down"></span></a>
-        <ul class="nav child_menu">
-          <li><a href="/data_siswa_baru">Pendatar Siswa Baru</a></li>
-          <li><a href="/siswa_baru">Data Siswa Baru</a></li>
-        </ul>
-        </li>
-        {% else %}
-        <li><a href="/beranda"><i class="fa fa-home"></i> Beranda <span class="fa fa-chevron-down"></span></a></li>
-        <li><a><i class="fa fa-edit"></i> Data Siswa <span class="fa fa-chevron-down"></span></a>
-        <ul class="nav child_menu">
-          <li><a href="#">Data Absensi</a></li>
-          <li><a href="/data_nilai">Data Nilai</a></li>
-          <li><a href="#">Data Kegiatan</a></li>
-        </ul>
-        </li>
-      <li><a><i class="fa fa-desktop"></i> Informasi <span class="fa fa-chevron-down"></span></a>
-        <ul class="nav child_menu">
-          <li><a href="/galery"> Gallery</a></li>
-          <li><a href="calendar.html">Calendar</a></li>
+<div class="main-menu menu-fixed menu-dark menu-accordion menu-shadow" data-scroll-to-active="true">
+  <div class="main-menu-content">
+    <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
+      <li class=" nav-item"><a href="/dashboard"><i class="la la-home"></i><span class="menu-title" data-i18n="nav.dash.main"> Dashboard</span></a></li>
+      <li class=" nav-item"><a href=""><i class="la la-television"></i><span class="menu-title" data-i18n=""><i class="fa fa-home" aria-hidden="true"></i> Proposal</span></a>
+        <ul class="dropdown">
+          <li class="mega-dropdown-menu dropdown-menu row">2</li>
+          <li class="dropdown-item">1</li>
         </ul>
       </li>
-      {% endif %}
+      <li class=" nav-item"><a href=""><i class="la la-shopping-cart"></i><span class="menu-title" data-i18n=""> Skripsi</span></a></li>
+      <li class=" nav-item"><a href=""><i class="la la-comments"></i><span class="menu-title" data-i18n=""> Chat Application</span></a></li>
     </ul>
   </div>
 </div>

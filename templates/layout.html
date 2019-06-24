@@ -10,34 +10,22 @@
   <meta name="keywords" content="admin template, modern admin template, dashboard template, flat admin template, responsive admin template, web app, crypto dashboard, bitcoin dashboard">
   <meta name="author" content="PIXINVENT">
   <title>Dashboard MITA</title>
-  <link rel="apple-touch-icon" href="https://pkm.umsida.ac.id/image/logo.png">
+  <!-- <link rel="apple-touch-icon" href="https://pkm.umsida.ac.id/image/logo.png"> -->
   <link rel="shortcut icon" type="image/x-icon" href="https://pixinvent.com/modern-admin-clean-bootstrap-4-dashboard-html-template/app-assets/images/ico/favicon.ico">
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i%7CQuicksand:300,400,500,700" rel="stylesheet">
 
   <!-- BEGIN: Vendor CSS-->
-  <link rel="stylesheet" type="text/css" href="https://pixinvent.com/modern-admin-clean-bootstrap-4-dashboard-html-template/app-assets/vendors/css/vendors.min.css">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/vendors.min.css') }}">
   <!-- END: Vendor CSS-->
 
   <!-- BEGIN: Theme CSS-->
-  <link rel="stylesheet" type="text/css" href="https://pixinvent.com/modern-admin-clean-bootstrap-4-dashboard-html-template/app-assets/css/bootstrap.min.css">
-  <link rel="stylesheet" type="text/css" href="https://pixinvent.com/modern-admin-clean-bootstrap-4-dashboard-html-template/app-assets/css/bootstrap-extended.min.css">
-  <link rel="stylesheet" type="text/css" href="https://pixinvent.com/modern-admin-clean-bootstrap-4-dashboard-html-template/app-assets/css/colors.min.css">
-  <link rel="stylesheet" type="text/css" href="https://pixinvent.com/modern-admin-clean-bootstrap-4-dashboard-html-template/app-assets/css/components.min.css">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap-extended.min.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/components.min.css') }}">
   <!-- END: Theme CSS-->
-
   <!-- BEGIN: Page CSS-->
-  <link rel="stylesheet" type="text/css" href="https://pixinvent.com/modern-admin-clean-bootstrap-4-dashboard-html-template/app-assets/css/core/menu/menu-types/vertical-menu-modern.css">
-  <link rel="stylesheet" type="text/css" href="https://pixinvent.com/modern-admin-clean-bootstrap-4-dashboard-html-template/app-assets/css/core/colors/palette-gradient.min.css">
-  <link rel="stylesheet" type="text/css" href="https://pixinvent.com/modern-admin-clean-bootstrap-4-dashboard-html-template/app-assets/vendors/css/charts/jquery-jvectormap-2.0.3.css">
-  <link rel="stylesheet" type="text/css" href="https://pixinvent.com/modern-admin-clean-bootstrap-4-dashboard-html-template/app-assets/vendors/css/charts/morris.css">
-  <link rel="stylesheet" type="text/css" href="https://pixinvent.com/modern-admin-clean-bootstrap-4-dashboard-html-template/app-assets/fonts/simple-line-icons/style.min.css">
-  <link rel="stylesheet" type="text/css" href="https://pixinvent.com/modern-admin-clean-bootstrap-4-dashboard-html-template/app-assets/css/core/colors/palette-gradient.min.css">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/vertical-menu-modern.css') }}">
   <!-- END: Page CSS-->
-
-  <!-- BEGIN: Custom CSS-->
-  <link rel="stylesheet" type="text/css" href="https://pixinvent.com/modern-admin-clean-bootstrap-4-dashboard-html-template/assets/css/style.css">
-  <!-- END: Custom CSS-->
-
 </head>
 <!-- END: Head-->
 
@@ -54,7 +42,7 @@
           <li class="nav-item mr-auto"><a class="navbar-brand" href="index.html"><img class="brand-logo" alt="modern admin logo" src="https://pkm.umsida.ac.id/image/logo.png">
               <h3 class="brand-text">RBPL MITA UMSIDA</h3>
             </a></li>
-          <li class="nav-item d-none d-lg-block nav-toggle"><a class="nav-link modern-nav-toggle pr-0" data-toggle="collapse"><i class="toggle-icon ft-toggle-right font-medium-3 white" data-ticon="ft-toggle-right"></i></a></li>
+          <!-- <li class="nav-item d-none d-lg-block nav-toggle"><a class="nav-link modern-nav-toggle pr-0" data-toggle="collapse"><i class="toggle-icon ft-toggle-right font-medium-3 white" data-ticon="ft-toggle-right"></i></a></li> -->
           <li class="nav-item d-lg-none"><a class="nav-link open-navbar-container" data-toggle="collapse" data-target="#navbar-mobile"><i class="la la-ellipsis-v"></i></a></li>
         </ul>
       </div>
@@ -137,14 +125,14 @@
             </li>
           </ul>
           <ul class="nav navbar-nav float-right">
-            <li class="dropdown dropdown-user nav-item"><a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown"><span class="mr-1 user-name text-bold-700">John Doe</span><span class="avatar avatar-online"><img src="https://pixinvent.com/modern-admin-clean-bootstrap-4-dashboard-html-template/app-assets/images/portrait/small/avatar-s-19.png"
+            <li class="dropdown dropdown-user nav-item"><a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown"><span class="mr-1 user-name text-bold-700">{{session.nik}}</span><span class="avatar avatar-online"><img src="https://pixinvent.com/modern-admin-clean-bootstrap-4-dashboard-html-template/app-assets/images/portrait/small/avatar-s-19.png"
                     alt="avatar"><i></i></span></a>
               <div class="dropdown-menu dropdown-menu-right">
                 <a class="dropdown-item" href="user-profile.html"><i class="ft-user"></i> Edit Profile</a>
                 <a class="dropdown-item" href="app-email.html"><i class="ft-mail"></i> My Inbox</a>
                 <a class="dropdown-item" href="user-cards.html"><i class="ft-check-square"></i> Task</a>
                 <a class="dropdown-item" href="app-chat.html"><i class="ft-message-square"></i> Chats</a>
-                <div class="dropdown-divider"></div><a class="dropdown-item" href="login-with-bg-image.html"><i class="ft-power"></i> Logout</a>
+                <div class="dropdown-divider"></div><a class="dropdown-item" href="/logout"><i class="ft-power"></i> Logout</a>
               </div>
             </li>
           </ul>
@@ -152,17 +140,8 @@
       </div>
     </div>
   </nav>
-  <div class="main-menu menu-fixed menu-dark menu-accordion menu-shadow" data-scroll-to-active="true">
-    <div class="main-menu-content">
-      <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
-        <li class=" nav-item"><a href=""><i class="la la-home"></i><span class="menu-title" data-i18n="nav.dash.main"> Dashboard</span></a></li>
-        </li>
-        <li class=" nav-item"><a href=""><i class="la la-television"></i><span class="menu-title" data-i18n="">Pengajuan Proposal</span></a></li>
-        <li class=" nav-item"><a href=""><i class="la la-shopping-cart"></i><span class="menu-title" data-i18n="">Pengajuan Skripsi</span></a></li>
-        <li class=" nav-item"><a href=""><i class="la la-comments"></i><span class="menu-title" data-i18n=""> Chat Application</span></a></li>
-      </ul>
-    </div>
-  </div>
+  <!-- tempat menu -->
+  {% include 'includes/_navbar.html' %}
   <div class="app-content content">
     <div class="content-wrapper">
       <div class="content-header row mb-1">
@@ -173,16 +152,6 @@
             <div class="card">
               {% block body %}
               {% endblock %}
-              <!-- <div class="card-content collapse show">
-                <div class="card-body pt-0">
-                  <div class="row mb-1">
-                  </div>
-                  <div class="chartjs">
-                    <canvas id="thisYearRevenue" width="400" style="position: absolute;"></canvas>
-                    <canvas id="lastYearRevenue" width="400"></canvas>
-                  </div>
-                </div>
-              </div> -->
             </div>
           </div>
         </div>
@@ -197,18 +166,9 @@
     <p class="clearfix blue-grey lighten-2 text-sm-center mb-0 px-2"><span class="float-md-left d-block d-md-inline-block">Copyright &copy; 2019 <a class="text-bold-800 grey darken-2" href="https://themeforest.net/user/pixinvent/portfolio?ref=pixinvent"
           target="_blank">PIXINVENT</a></span><span class="float-md-right d-none d-lg-block">Hand-crafted & Made with <i class="ft-heart pink"></i><span id="scroll-top"></span></span></p>
   </footer>
-  <script src="https://pixinvent.com/modern-admin-clean-bootstrap-4-dashboard-html-template/app-assets/vendors/js/vendors.min.js"></script>
-  <script src="https://pixinvent.com/modern-admin-clean-bootstrap-4-dashboard-html-template/app-assets/vendors/js/charts/chart.min.js"></script>
-  <script src="https://pixinvent.com/modern-admin-clean-bootstrap-4-dashboard-html-template/app-assets/vendors/js/charts/raphael-min.js"></script>
-  <script src="https://pixinvent.com/modern-admin-clean-bootstrap-4-dashboard-html-template/app-assets/vendors/js/charts/morris.min.js"></script>
-  <script src="https://pixinvent.com/modern-admin-clean-bootstrap-4-dashboard-html-template/app-assets/vendors/js/charts/jvector/jquery-jvectormap-2.0.3.min.js"></script>
-  <script src="https://pixinvent.com/modern-admin-clean-bootstrap-4-dashboard-html-template/app-assets/vendors/js/charts/jvector/jquery-jvectormap-world-mill.js"></script>
-  <script src="https://pixinvent.com/modern-admin-clean-bootstrap-4-dashboard-html-template/app-assets/data/jvector/visitor-data.js"></script>
-  <script src="https://pixinvent.com/modern-admin-clean-bootstrap-4-dashboard-html-template/app-assets/js/core/app-menu.min.js"></script>
-  <script src="https://pixinvent.com/modern-admin-clean-bootstrap-4-dashboard-html-template/app-assets/js/core/app.min.js"></script>
-  <script src="https://pixinvent.com/modern-admin-clean-bootstrap-4-dashboard-html-template/app-assets/js/scripts/customizer.min.js"></script>
-  <script src="https://pixinvent.com/modern-admin-clean-bootstrap-4-dashboard-html-template/app-assets/js/scripts/footer.min.js"></script>
-  <script src="https://pixinvent.com/modern-admin-clean-bootstrap-4-dashboard-html-template/app-assets/js/scripts/pages/dashboard-sales.min.js"></script>
+  <script src="{{ url_for('static', filename='css/vendors.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='css/app-menu.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='css/app.min.js') }}"></script>
 </body>
 <!-- END: Body-->
 

@@ -2,20 +2,22 @@ from flask import Flask, render_template, flash, redirect, url_for, session, req
 from wtforms import Form, StringField, TextAreaField, PasswordField, validators
 import mysql.connector
 from passlib.hash import sha256_crypt
+from functools import wraps
 
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'jsbcfsbfjefebw237u3gdbdc'
 
 config = {
-  'user': 'root',
-  'password': 'root',
-  'unix_socket': '/Applications/MAMP/tmp/mysql/mysql.sock',
-  'database': 'myflaskapp',
-  'raise_on_warnings': True,
+    'user': 'root',
+    'password': 'root',
+    'unix_socket': '/Applications/MAMP/tmp/mysql/mysql.sock',
+    'database': 'myflaskapp',
+    'raise_on_warnings': True,
 }
 
 db = mysql.connector.connect(**config)
+
 
 @app.route('/')
 def index():
@@ -38,44 +40,6 @@ def index():
    else:
       return render_template('login.html')
 
-@app.route('/add_pengajuan',methods=['GET', 'POST'])
-def add_pengajuan():
-   if request.method == 'POST':
-      judul = request.form['judul']
-      kaprodi = request.form['kaprodi']
-      dosbim = request.form['dosbim']
-      abstrak = request.form['abstrak']
-      # create cursor
-      cur = db.cursor(buffered=True)
-      # execute query
-
-      cur.execute("INSERT INTO pengajuan (judul, kaprodi, dosbim, username, abstrak, nik) VALUES (%s, %s, %s, %s, %s, %s)",(judul, kaprodi, dosbim, session['nik'], abstrak, 2))
-
-      db.commit()
-
-      cur.close()
-
-      cur = db.cursor(buffered=True)
-
-      nik = session['nik']
-      result=cur.execute("SELECT * FROM pengajuan WHERE nik = %s",[nik])
-      data = cur.fetchall()
-
-      if result > 0:
-         return render_template('add_pengajuan.html', data=data)
-      else:
-         msg = 'No Articles Found'
-         return render_template('add_pengajuan.html', msg=msg)
-
-      # commit to DB
-      db.commit()
-      # close connection
-      cur.close()
-
-      flash(' Pengajuan berhasil, Cek status pengajuan', 'success')
-
-      return redirect(url_for('add_pengajuan'))
-   return render_template('add_pengajuan.html')
 
 def is_logged_in(f):
    @wraps(f)
@@ -83,9 +47,52 @@ def is_logged_in(f):
       if 'logged_in' in session:
          return f(*args, **kwargs)
       else:
-         flash('Unauthorized, Please Log In', 'danger')
+         flash('Login Tidak Sah, Silahkan Login dengar benar', 'danger')
          return redirect(url_for('login'))
    return wrap
+
+
+@app.route('/dashboard')
+def dashboard():
+   return render_template('dashboard.html')
+
+
+@app.route('/add_pengajuan', methods=['GET', 'POST'])
+@is_logged_in
+def add_pengajuan():
+   if request.method == 'POST':
+      judul = request.form['judul']
+      dosbim = request.form['dosbim']
+      # berkas = request.form['berkas']
+      sinopsis = request.form['sinopsis']
+      # create cursor
+      cur = db.cursor(buffered=True)
+      # execute query
+
+      cur.execute("INSERT INTO pengajuan (judul,dosbim,berkas,sinopsis) VALUES (%s, %s, %s, %s)",
+                  (judul, dosbim, 1, sinopsis))
+
+      db.commit()
+
+      cur.close()
+
+      flash(' Pengajuan berhasil, Cek status pengajuan', 'success')
+
+      return redirect(url_for('status'))
+   return render_template('add_pengajuan.html')
+
+
+@app.route('/status')
+def status():
+      # create cursor
+      cur = db.cursor()
+      cur.execute("SELECT * FROM pengajuan")
+
+      articles = cur.fetchall()
+      return render_template('status.html', articles=articles)
+      # Close Connectio
+      cur.close()
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -93,16 +100,16 @@ def login():
       # Get Form Field
       nik = request.form['nik']
       password_candidate = request.form['password']
-      # password = request.form['password']
       # Create Cursor
       cur = db.cursor(buffered=True)
 
       # Get user by username
-      sSql = ''' SELECT nik, password, level FROM users WHERE nik = '{0}' '''.format(nik,)
+      sSql = ''' SELECT nik, password, level FROM users WHERE nik = '{0}' '''.format(
+          nik,)
       result = cur.execute(sSql)
       data = cur.fetchone()
 
-      if data :
+      if data:
          # Get stored hash
          qNik = data[0]
          qPassword = data[1]
@@ -117,9 +124,9 @@ def login():
 
             flash('you are now logged', 'success')
             return redirect(url_for('index'))
-         else :
-           error = 'Invalid Password'
-           return render_template('login.html', error=error)
+         else:
+            error = 'Invalid Password'
+            return render_template('login.html', error=error)
 
          # close connection
          cur.close()
@@ -129,6 +136,7 @@ def login():
          return render_template('login.html', error=error)
    return render_template('login.html')
 
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
    # form = RegisterForm(request.form)
@@ -137,7 +145,6 @@ def register():
       nik = request.form['nik']
       username = request.form['name']
       password = sha256_crypt.encrypt(str(request.form['password']))
-
 
       # create cursor
       cur = db.cursor(buffered=True)
@@ -156,6 +163,13 @@ def register():
 
       return redirect(url_for('login'))
    return render_template('login.html')
+
+
+@app.route('/logout')
+def logout():
+   session.clear()
+   flash('Thanks you, You are logged out', 'success')
+   return redirect(url_for('index'))
 
 
 app.secret_key = 'secret123'
