@@ -1,28 +1,28 @@
 {% extends 'layout.html' %}
 {% block body %}
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">NIK</th>
-      <th scope="col">Nama</th>
-      <th scope="col">Judul Tugas Akhir</th>
-      <th scope="col">Status</th>
-      <th scope="col"></th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for article in articles %}
-    <tr>
-      <th scope="row">1</th>
-      <td>{{article[judul]}}</td>
-      <td>{{article[dosbim]}}</td>
-      <td>{{article[sinopsis]}}</td>
-      <td>ngenteni</td>
-      <td><button type="submit" class="btn round btn-primary mr-1 btn-glow">Edit <i class="ft-plus"></i></button></td>
-      <td><button type="submit" class="btn round btn-danger mr-1 btn-glow">Hapus <i class="ft-plus"></i></button></td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+<div class="table-responsive">
+  <table id="recent-orders" class="table table-hover table-xl mb-0">
+    <thead>
+      <tr>
+        <th sclass="border-top-0">NIK</th>
+        <th class="border-top-0">Judul Tugas Akhir</th>
+        <th class="border-top-0">Dosen Pembimbing</th>
+        <th class="border-top-0">Status</th>
+        <th class="border-top-0"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in data %}
+      <tr>
+        <td class="text-truncate">{{item.1}}</td>
+        <td class="text-truncate">{{item.2}}</td>
+        <td class="text-truncate">{{item.3}}</td>
+        <td class="text-truncate">ngenteni</td>
+        <td class="text-truncate"><button type="submit" class="btn round btn-primary mr-1 btn-glow">Edit <i class="ft-plus"></i></button></td>
+        <td class="text-truncate"><button type="submit" class="btn round btn-danger mr-1 btn-glow">Hapus <i class="ft-plus"></i></button></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
 {% endblock %}

@@ -69,8 +69,8 @@ def add_pengajuan():
       cur = db.cursor(buffered=True)
       # execute query
 
-      cur.execute("INSERT INTO pengajuan (judul,dosbim,berkas,sinopsis) VALUES (%s, %s, %s, %s)",
-                  (judul, dosbim, 1, sinopsis))
+      cur.execute("INSERT INTO pengajuan (nik,judul,dosbim,berkas,sinopsis) VALUES (%s,%s, %s, %s, %s)",
+                  (session['nik'],judul, dosbim, 1, sinopsis))
 
       db.commit()
 
@@ -84,12 +84,16 @@ def add_pengajuan():
 
 @app.route('/status')
 def status():
-      # create cursor
-      cur = db.cursor()
-      cur.execute("SELECT * FROM pengajuan")
+    # yang bermasalah koneksi databasenya
+      cur = db.cursor(buffered=True)
+      result = cur.execute("SELECT * FROM pengajuan")
+      data = cur.fetchall()
 
-      articles = cur.fetchall()
-      return render_template('status.html', articles=articles)
+      if data > 0:
+         return render_template('status.html', data=data)
+      else:
+         msg = 'Tidak ada Pengajuan'
+         return render_template('status.html', msg=msg)
       # Close Connectio
       cur.close()
 

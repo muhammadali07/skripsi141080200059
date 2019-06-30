@@ -10,6 +10,7 @@
   <meta name="keywords" content="admin template, modern admin template, dashboard template, flat admin template, responsive admin template, web app, crypto dashboard, bitcoin dashboard">
   <meta name="author" content="PIXINVENT">
   <title>Dashboard MITA</title>
+
   <!-- <link rel="apple-touch-icon" href="https://pkm.umsida.ac.id/image/logo.png"> -->
   <link rel="shortcut icon" type="image/x-icon" href="https://pixinvent.com/modern-admin-clean-bootstrap-4-dashboard-html-template/app-assets/images/ico/favicon.ico">
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i%7CQuicksand:300,400,500,700" rel="stylesheet">
@@ -19,12 +20,12 @@
   <!-- END: Vendor CSS-->
 
   <!-- BEGIN: Theme CSS-->
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap-extended.min.css') }}">
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/components.min.css') }}">
+  <link rel="stylesheet" type="text/css" href="https://pixinvent.com/modern-admin-clean-bootstrap-4-dashboard-html-template/app-assets/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="https://pixinvent.com/modern-admin-clean-bootstrap-4-dashboard-html-template/app-assets/css/bootstrap-extended.min.css">
+  <link rel="stylesheet" type="text/css" href="https://pixinvent.com/modern-admin-clean-bootstrap-4-dashboard-html-template/app-assets/css/components.min.css">
   <!-- END: Theme CSS-->
   <!-- BEGIN: Page CSS-->
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/vertical-menu-modern.css') }}">
+  <link rel="stylesheet" type="text/css" href="https://pixinvent.com/modern-admin-clean-bootstrap-4-dashboard-html-template/app-assets/css/core/menu/menu-types/vertical-menu-modern.css">
   <!-- END: Page CSS-->
 </head>
 <!-- END: Head-->
@@ -125,8 +126,8 @@
             </li>
           </ul>
           <ul class="nav navbar-nav float-right">
-            <li class="dropdown dropdown-user nav-item"><a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown"><span class="mr-1 user-name text-bold-700">{{session.nik}}</span><span class="avatar avatar-online"><img src="https://pixinvent.com/modern-admin-clean-bootstrap-4-dashboard-html-template/app-assets/images/portrait/small/avatar-s-19.png"
-                    alt="avatar"><i></i></span></a>
+            <li class="dropdown dropdown-user nav-item"><a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown"><span class="mr-1 user-name text-bold-700">{{session.nik}}</span><span class="avatar avatar-online"><img
+                    src="https://pixinvent.com/modern-admin-clean-bootstrap-4-dashboard-html-template/app-assets/images/portrait/small/avatar-s-19.png" alt="avatar"><i></i></span></a>
               <div class="dropdown-menu dropdown-menu-right">
                 <a class="dropdown-item" href="user-profile.html"><i class="ft-user"></i> Edit Profile</a>
                 <a class="dropdown-item" href="app-email.html"><i class="ft-mail"></i> My Inbox</a>
@@ -166,9 +167,9 @@
     <p class="clearfix blue-grey lighten-2 text-sm-center mb-0 px-2"><span class="float-md-left d-block d-md-inline-block">Copyright &copy; 2019 <a class="text-bold-800 grey darken-2" href="https://themeforest.net/user/pixinvent/portfolio?ref=pixinvent"
           target="_blank">PIXINVENT</a></span><span class="float-md-right d-none d-lg-block">Hand-crafted & Made with <i class="ft-heart pink"></i><span id="scroll-top"></span></span></p>
   </footer>
-  <script src="{{ url_for('static', filename='css/vendors.min.js') }}"></script>
-  <script src="{{ url_for('static', filename='css/app-menu.min.js') }}"></script>
-  <script src="{{ url_for('static', filename='css/app.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/vendors.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/app-menu.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/app.min.js') }}"></script>
 </body>
 <!-- END: Body-->
 
