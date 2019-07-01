@@ -28,7 +28,7 @@ def index():
          cur.execute("SELECT * FROM users WHERE nik=%s",
                      [nik_session])
          rows = cur.fetchall()
-         return render_template('add_pengajuan.html')
+         return render_template('dashboard_dosbim.html')
       elif session['level'] == 2:
          cur = db.cursor(buffered=True)
          cur.execute("SELECT * FROM users WHERE nik=%s",
@@ -98,7 +98,7 @@ def status():
       cur.close()
 
 class PengajuanForm(Form):
-   title = StringField('Title', [validators.Length(min=1, max=200)])
+   title = StringField('', [validators.Length(min=1, max=200)])
    body = TextAreaField('Body', [validators.Length(min=30)])
 
 @app.route('/edit_pengajuan/<string:id>', methods=['GET', 'POST'])
@@ -112,15 +112,7 @@ def edit_pengajuan(id):
 
    data = cur.fetchone()
 
-   # get form
-   form = PengajuanForm(request.form)
-
-   # Populate article from field
-   form.judul.data = data['judul']
-   form.dosbim.data = data['dosbim']
-   form.sinopsis.data = data['sinopsis']
-
-   if request.method == 'POST' and form.validate():
+   if request.method == 'POST':
       judul = request.form['judul']
       dosbim = request.form['dosbim']
       sinopsis = request.form['sinopsis']
@@ -140,8 +132,27 @@ def edit_pengajuan(id):
 
       flash('Update Berhasil', 'success')
 
-      return redirect(url_for('status'))
-   return render_template('add_pengajuan.html', form=form)
+      return redirect(url_for('edit'))
+   return render_template('edit.html')
+
+
+@app.route('/delete_pengajuab/<string:id>', methods=['POST'])
+def delete_pengajuan(id):
+   # create cursor
+   cur = db.cursor(buffered=True)
+
+   # execute
+   cur.execute("DELETE FROM pengajuan WHERE id = %s", [id])
+
+   # commit DB
+   db.commit()
+
+   # close connection
+   cur.close()
+
+   flash('Pengajuan di Hapus', 'success')
+
+   return redirect(url_for('status'))
 
 
 
@@ -214,6 +225,21 @@ def register():
 
       return redirect(url_for('login'))
    return render_template('login.html')
+
+@app.route('/dashboard_dosbim')
+def dashboard_dosbim():
+    # yang bermasalah koneksi databasenya
+      cur = db.cursor(buffered=True)
+      result = cur.execute("SELECT * FROM pengajuan")
+      data = cur.fetchall()
+
+      if data > 0:
+         return render_template('dashboard_dosbim.html', data=data)
+      else:
+         msg     = 'Tidak ada Pengajuan'
+         return render_template('dashboard_dosbim.html', msg=msg)
+      # Close Connectio
+      cur.close()
 
 
 @app.route('/logout')
