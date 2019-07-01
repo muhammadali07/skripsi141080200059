@@ -69,8 +69,8 @@ def add_pengajuan():
       cur = db.cursor(buffered=True)
       # execute query
 
-      cur.execute("INSERT INTO pengajuan (nik,judul,dosbim,berkas,sinopsis) VALUES (%s,%s, %s, %s, %s)",
-                  (session['nik'],judul, dosbim, 1, sinopsis))
+      cur.execute("INSERT INTO pengajuan (nik,judul,dosbim,berkas,sinopsis,status) VALUES (%s,%s, %s, %s, %s, %s)",
+                  (session['nik'],judul, dosbim, 1, sinopsis,'Menunggu Konfirmasi'))
 
       db.commit()
 
@@ -92,10 +92,57 @@ def status():
       if data > 0:
          return render_template('status.html', data=data)
       else:
-         msg = 'Tidak ada Pengajuan'
+         msg     = 'Tidak ada Pengajuan'
          return render_template('status.html', msg=msg)
       # Close Connectio
       cur.close()
+
+class PengajuanForm(Form):
+   title = StringField('Title', [validators.Length(min=1, max=200)])
+   body = TextAreaField('Body', [validators.Length(min=30)])
+
+@app.route('/edit_pengajuan/<string:id>', methods=['GET', 'POST'])
+@is_logged_in
+def edit_pengajuan(id):
+   # create cursor
+   cur = db.cursor(buffered=True)
+
+   # get article by id
+   result = cur.execute("SELECT * FROM pengajuan WHERE id = %s", [id])
+
+   data = cur.fetchone()
+
+   # get form
+   form = PengajuanForm(request.form)
+
+   # Populate article from field
+   form.judul.data = data['judul']
+   form.dosbim.data = data['dosbim']
+   form.sinopsis.data = data['sinopsis']
+
+   if request.method == 'POST' and form.validate():
+      judul = request.form['judul']
+      dosbim = request.form['dosbim']
+      sinopsis = request.form['sinopsis']
+
+      # create cursor
+      cur = db.cursor(buffered=True)
+
+      # execute
+      cur.execute(
+          "UPDATE pengajuan SET judul=%s, dosbim=%s, sinopsis=%s WHERE id = %s", (judul, dosbim, sinopsis, id))
+
+      # commit to DB
+      db.commit()
+
+      # close connection
+      cur.close()
+
+      flash('Update Berhasil', 'success')
+
+      return redirect(url_for('status'))
+   return render_template('add_pengajuan.html', form=form)
+
 
 
 @app.route('/login', methods=['GET', 'POST'])

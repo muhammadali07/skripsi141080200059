@@ -1,7 +1,7 @@
 {% extends 'layout.html' %}
 {% block body %}
 <div class="table-responsive">
-  <table id="recent-orders" class="table table-hover table-xl mb-0">
+  <table class="table-bordered table-sm">
     <thead>
       <tr>
         <th sclass="border-top-0">NIK</th>
@@ -17,8 +17,8 @@
         <td class="text-truncate">{{item.1}}</td>
         <td class="text-truncate">{{item.2}}</td>
         <td class="text-truncate">{{item.3}}</td>
-        <td class="text-truncate">ngenteni</td>
-        <td class="text-truncate"><button type="submit" class="btn round btn-primary mr-1 btn-glow">Edit <i class="ft-plus"></i></button></td>
+        <td class="text-truncate">{{item.6}}</td>
+        <td class="text-truncate"><button type="submit" class="btn round btn-primary mr-1 btn-glow"><a href="/edit_pengajuan"></a>Edit <i class="ft-plus"></i></button></td>
         <td class="text-truncate"><button type="submit" class="btn round btn-danger mr-1 btn-glow">Hapus <i class="ft-plus"></i></button></td>
       </tr>
       {% endfor %}
