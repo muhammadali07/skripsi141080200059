@@ -98,8 +98,9 @@ def status():
       cur.close()
 
 class PengajuanForm(Form):
-   title = StringField('', [validators.Length(min=1, max=200)])
-   body = TextAreaField('Body', [validators.Length(min=30)])
+   judul = StringField('Judul', [validators.Length(min=1, max=200)])
+   dosbim= StringField('Dosbim', [validators.Length(min=30)])
+   sinopsis= TextAreaField('Body', [validators.Length(min=30)])
 
 @app.route('/edit_pengajuan/<string:id>', methods=['GET', 'POST'])
 @is_logged_in
@@ -110,9 +111,13 @@ def edit_pengajuan(id):
    # get article by id
    result = cur.execute("SELECT * FROM pengajuan WHERE id = %s", [id])
 
-   data = cur.fetchone()
+   article = cur.fetchone()
 
-   if request.method == 'POST':
+   form = PengajuanForm(request.form)
+
+   form.judul.data = article[str(judul,)]
+
+   if request.method == 'POST' and form.validate():
       judul = request.form['judul']
       dosbim = request.form['dosbim']
       sinopsis = request.form['sinopsis']
