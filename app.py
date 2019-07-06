@@ -307,6 +307,21 @@ def decline(id):
 
       return redirect(url_for('dashboard_dosbim'))
 
+@app.route('/chat')
+def chat():
+    # yang bermasalah koneksi databasenya
+      cur = db.cursor(buffered=True)
+      result = cur.execute("SELECT * FROM chat ORDER BY register_date DESC")
+      data = cur.fetchall()
+
+      if data > 0:
+         return render_template('chat.html', data=data)
+      else:
+         msg     = 'Tidak ada Pengajuan'
+         return render_template('chat.html', msg=msg)
+      # Close Connectio
+      cur.close()
+
 @app.route('/logout')
 def logout():
    session.clear()

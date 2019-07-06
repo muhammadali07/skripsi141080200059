@@ -27,6 +27,33 @@
   <!-- BEGIN: Page CSS-->
   <link rel="stylesheet" type="text/css" href="https://pixinvent.com/modern-admin-clean-bootstrap-4-dashboard-html-template/app-assets/css/core/menu/menu-types/vertical-menu-modern.css">
   <!-- END: Page CSS-->
+  <style media="screen">
+    .container {
+    border: 2px solid #dedede;
+    background-color: white;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px 0;
+    }
+
+    .container img {
+      float: left;
+      max-width: 60px;
+      width: 100%;
+      margin-right: 20px;
+      border-radius: 50%;
+    }
+
+    .container img.right {
+      float: right;
+      margin-left: 20px;
+      margin-right:0;
+    }
+    .time-right {
+      float: right;
+      color: #aaa;
+    }
+  </style>
 </head>
 <!-- END: Head-->
 
@@ -50,78 +77,9 @@
       <div class="navbar-container content">
         <div class="collapse navbar-collapse" id="navbar-mobile">
           <ul class="nav navbar-nav mr-auto float-left">
-            <li class="nav-item d-none d-lg-block"><a class="nav-link nav-link-expand" href="#"><i class="ficon ft-maximize"></i></a></li>
-            <li class="dropdown nav-item mega-dropdown d-none d-lg-block"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown">Informasi</a>
-              <ul class="mega-dropdown-menu dropdown-menu row">
-                <li class="col-md-2">
-                  <h6 class="dropdown-menu-header text-uppercase mb-1"><i class="la la-newspaper-o"></i> News</h6>
-                  <div id="mega-menu-carousel-example">
-                    <div><img class="rounded img-fluid mb-1" src="https://pixinvent.com/modern-admin-clean-bootstrap-4-dashboard-html-template/app-assets/images/slider/slider-2.png" alt="First slide"><a class="news-title mb-0 d-block" href="#">Poster
-                        Frame PSD</a>
-                      <p class="news-content"><span class="font-small-2">January 26, 2018</span></p>
-                    </div>
-                  </div>
-                </li>
-                <li class="col-md-3">
-                  <h6 class="dropdown-menu-header text-uppercase"><i class="la la-random"></i> Akademi</h6>
-                  <ul>
-                    <li class="menu-list">
-                      <ul>
-                      </ul>
-                    </li>
-                  </ul>
-                </li>
-                <li class="col-md-3">
-                  <h6 class="dropdown-menu-header text-uppercase"><i class="la la-list-ul"></i> Accordion</h6>
-                  <div class="mt-1" id="accordionWrap" role="tablist" aria-multiselectable="true">
-                    <div class="card border-0 box-shadow-0 collapse-icon accordion-icon-rotate">
-                    </div>
-                  </div>
-                </li>
-                <li class="col-md-4">
-                  <h6 class="dropdown-menu-header text-uppercase mb-1"><i class="la la-envelope-o"></i> Contact Us</h6>
-                  <form class="form form-horizontal">
-                    <div class="form-body">
-                      <div class="form-group row">
-                        <label class="col-sm-3 form-control-label" for="inputName1">Name</label>
-                        <div class="col-sm-9">
-                          <div class="position-relative has-icon-left">
-                            <input class="form-control" type="text" id="inputName1" placeholder="John Doe">
-                            <div class="form-control-position pl-1"><i class="la la-user"></i></div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label class="col-sm-3 form-control-label" for="inputEmail1">Email</label>
-                        <div class="col-sm-9">
-                          <div class="position-relative has-icon-left">
-                            <input class="form-control" type="email" id="inputEmail1" placeholder="john@example.com">
-                            <div class="form-control-position pl-1"><i class="la la-envelope-o"></i></div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label class="col-sm-3 form-control-label" for="inputMessage1">Message</label>
-                        <div class="col-sm-9">
-                          <div class="position-relative has-icon-left">
-                            <textarea class="form-control" id="inputMessage1" rows="2" placeholder="Simple Textarea"></textarea>
-                            <div class="form-control-position pl-1"><i class="la la-commenting-o"></i></div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-sm-12 mb-1">
-                          <button class="btn btn-info float-right" type="button"><i class="la la-paper-plane-o"></i> Send </button>
-                        </div>
-                      </div>
-                    </div>
-                  </form>
-                </li>
-              </ul>
-            </li>
             <li class="nav-item nav-search"><a class="nav-link nav-link-search" href="#"><i class="ficon ft-search"></i></a>
               <div class="search-input">
-                <input class="input" type="text" placeholder="Explore Modern...">
+                <input class="input" type="text" placeholder="Ketik Sesuatu">
               </div>
             </li>
           </ul>
@@ -129,10 +87,7 @@
             <li class="dropdown dropdown-user nav-item"><a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown"><span class="mr-1 user-name text-bold-700">{{session.nik}}</span><span class="avatar avatar-online"><img
                     src="https://pixinvent.com/modern-admin-clean-bootstrap-4-dashboard-html-template/app-assets/images/portrait/small/avatar-s-19.png" alt="avatar"><i></i></span></a>
               <div class="dropdown-menu dropdown-menu-right">
-                <a class="dropdown-item" href="user-profile.html"><i class="ft-user"></i> Edit Profile</a>
-                <a class="dropdown-item" href="app-email.html"><i class="ft-mail"></i> My Inbox</a>
-                <a class="dropdown-item" href="user-cards.html"><i class="ft-check-square"></i> Task</a>
-                <a class="dropdown-item" href="app-chat.html"><i class="ft-message-square"></i> Chats</a>
+                <a class="dropdown-item" href="/chat"><i class="ft-message-square"></i> Chats</a>
                 <div class="dropdown-divider"></div><a class="dropdown-item" href="/logout"><i class="ft-power"></i> Logout</a>
               </div>
             </li>
