@@ -28,7 +28,7 @@ def index():
          cur.execute("SELECT * FROM users WHERE nik=%s",
                      [nik_session])
          rows = cur.fetchall()
-         return render_template('dashboard_dosbim.html')
+         return redirect(url_for('dashboard_dosbim'))
       elif session['level'] == 2:
          cur = db.cursor(buffered=True)
          cur.execute("SELECT * FROM users WHERE nik=%s",
@@ -83,6 +83,7 @@ def add_pengajuan():
 
 
 @app.route('/status')
+@is_logged_in
 def status():
     # yang bermasalah koneksi databasenya
       cur = db.cursor(buffered=True)
@@ -97,10 +98,6 @@ def status():
       # Close Connectio
       cur.close()
 
-class PengajuanForm(Form):
-   judul = StringField('Judul', [validators.Length(min=1, max=200)])
-   dosbim= StringField('Dosbim', [validators.Length(min=30)])
-   sinopsis= TextAreaField('Body', [validators.Length(min=30)])
 
 @app.route('/edit_pengajuan/<string:id>', methods=['GET', 'POST'])
 @is_logged_in
@@ -110,14 +107,9 @@ def edit_pengajuan(id):
 
    # get article by id
    result = cur.execute("SELECT * FROM pengajuan WHERE id = %s", [id])
+   data = cur.fetchall()
 
-   article = cur.fetchone()
-
-   form = PengajuanForm(request.form)
-
-   form.judul.data = article[str(judul,)]
-
-   if request.method == 'POST' and form.validate():
+   if request.method == 'POST':
       judul = request.form['judul']
       dosbim = request.form['dosbim']
       sinopsis = request.form['sinopsis']
@@ -137,11 +129,11 @@ def edit_pengajuan(id):
 
       flash('Update Berhasil', 'success')
 
-      return redirect(url_for('edit'))
-   return render_template('edit.html')
+      return redirect(url_for('status'))
+   return render_template('edit.html', data=data)
 
 
-@app.route('/delete_pengajuab/<string:id>', methods=['POST'])
+@app.route('/delete_pengajuan/<string:id>', methods=['POST'])
 def delete_pengajuan(id):
    # create cursor
    cur = db.cursor(buffered=True)
@@ -158,8 +150,6 @@ def delete_pengajuan(id):
    flash('Pengajuan di Hapus', 'success')
 
    return redirect(url_for('status'))
-
-
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -232,6 +222,7 @@ def register():
    return render_template('login.html')
 
 @app.route('/dashboard_dosbim')
+@is_logged_in
 def dashboard_dosbim():
     # yang bermasalah koneksi databasenya
       cur = db.cursor(buffered=True)
@@ -246,6 +237,75 @@ def dashboard_dosbim():
       # Close Connectio
       cur.close()
 
+@app.route('/tanya/<string:id>', methods=['GET', 'POST'])
+def tanya(id):
+   # create cursor
+   cur = db.cursor(buffered=True)
+
+   # get article by id
+   result = cur.execute("SELECT * FROM pengajuan WHERE id = %s", [id])
+   data = cur.fetchall()
+
+   if request.method == 'POST':
+      judul = request.form['judul']
+      dosbim = request.form['dosbim']
+      chat = request.form['chat']
+
+      # create cursor
+      cur = db.cursor(buffered=True)
+
+      # execute
+      cur.execute("INSERT INTO chat (judul, nik, dosbim, chat) VALUES (%s, %s, %s, %s)",
+                  (judul, session['nik'], dosbim, chat))
+
+      # commit to DB
+      db.commit()
+
+      # close connection
+      cur.close()
+
+      flash('Pertanyaan di ajukan', 'success')
+
+      return redirect(url_for('dashboard'))
+   return render_template('tanya.html', data=data)
+
+@app.route('/approve/<string:id>', methods=['GET', 'POST'])
+def approve(id):
+      # create cursor
+      cur = db.cursor(buffered=True)
+
+      # execute
+      cur.execute(
+          "UPDATE pengajuan SET status=%s WHERE id = %s", ('Pengajuan di terima',id))
+
+      # commit to DB
+      db.commit()
+
+      # close connection
+      cur.close()
+
+      flash('Approve Berhasil', 'success')
+
+      return redirect(url_for('dashboard_dosbim'))
+
+@app.route('/decline/<string:id>', methods=['GET', 'POST'])
+def decline(id):
+      # create cursor
+      cur = db.cursor(buffered=True)
+
+      # execute
+      cur.execute(
+          "UPDATE pengajuan SET status=%s WHERE id = %s", ('Pengajuan di tolak',id))
+
+      # commit to DB
+      db.commit()
+
+      # close connection
+      cur.close()
+
+      flash('Maaf Pengajuan kamu di tolak, harap melakukan pengajuan ulang kakak', 'success')
+
+      return redirect(url_for('dashboard_dosbim'))
 
 @app.route('/logout')
 def logout():
