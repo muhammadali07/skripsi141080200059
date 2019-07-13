@@ -1,8 +1,9 @@
 {% extends 'layout.html' %}
 {% block body %}
+{% include 'includes/_messages.html' %}
 <h1>Entry Data Dosen</h1>
 <hr>
-<form class="" action="" method="post">
+<form action="/add_data_dosen" method="POST">
   <nav>
     <div class="nav nav-tabs" id="nav-tab" role="tablist">
       <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Data Dosen</a>
@@ -17,25 +18,25 @@
         <div class="form-row">
           <div class="form-group col-md-6">
             <label for="inputEmail4">NIDN Dosen Pembimbing</label>
-            <input type="text" class="form-control" id="inputEmail4" placeholder="NIDN Dosen Pembimbing">
+            <input type="text" name="nik_dosen" class="form-control" id="inputEmail4" placeholder="NIDN Dosen Pembimbing" required="">
           </div>
           <div class="form-group col-md-6">
             <label for="inputPassword4">Nama Dosen Pembimbing</label>
-            <input type="text" class="form-control" id="inputPassword4" placeholder="Nama Dosen Pembimbing">
+            <input type="text" name="dosbim" class="form-control" id="inputPassword4" placeholder="Nama Dosen Pembimbing" required="">
           </div>
         </div>
         <div class="form-group">
           <label for="inputAddress">Alamat Dosen Pembimbing</label>
-          <input type="text" class="form-control" id="inputAddress" placeholder="Alamat Dosen Pembimbing">
+          <input type="text" name="alamat" class="form-control" id="inputAddress" placeholder="Alamat Dosen Pembimbing" required="">
         </div>
         <div class="form-row">
           <div class="form-group col-md-4">
             <label for="inputCity">No Telephone</label>
-            <input type="text" class="form-control" placeholder="No Telephone">
+            <input type="text" name="telp" class="form-control" placeholder="No Telephone" required="">
           </div>
           <div class="form-group col-md-4">
             <label for="inputState">Fakultas Dosen Pembimbing</label>
-            <select id="inputState" class="form-control">
+            <select id="inputState" name="fakultas" class="form-control" required="">
               <option selected>Choose...</option>
               <option>Teknik Informatika</option>
               <option>Teknik Mesin</option>
@@ -44,7 +45,7 @@
           </div>
           <div class="form-group col-md-4">
             <label for="inputZip">Email Dosen Pembimbing</label>
-            <input type="email" class="form-control" id="inputZip" placeholder="Email Dosen Pembimbing">
+            <input type="email" name="email_dosbim" class="form-control" id="inputZip" placeholder="Email Dosen Pembimbing" required="">
           </div>
         </div>
       </div>
@@ -54,11 +55,11 @@
       <div class="form-row">
         <div class="form-group col-md-4">
           <label for="inputCity">Pendidikan Terakhir</label>
-          <input type="text" class="form-control" placeholder="Nama Universitas">
+          <input type="text" name="pend_terakhir" class="form-control" placeholder="Nama Universitas" required="">
         </div>
         <div class="form-group col-md-4">
           <label for="inputState">Program Studi</label>
-          <select id="inputState" class="form-control">
+          <select id="inputState" name="prodi" class="form-control">
             <option selected>Choose...</option>
             <option>Teknik Informatika</option>
             <option>Teknik Mesin</option>
@@ -67,7 +68,7 @@
         </div>
         <div class="form-group col-md-4">
           <label for="inputZip">Bidang Keilmuan</label>
-          <input type="email" class="form-control" id="inputZip" placeholder="Email Dosen Pembimbing">
+          <input type="text" name="bid_ilmu" class="form-control" id="inputZip" placeholder="Email Dosen Pembimbing" required="">
         </div>
       </div>
     </div>
@@ -76,12 +77,11 @@
       <div class="form-row">
         <div class="form-group col-md-6">
           <label for="inputCity">Spesialisasi </label>
-          <input type="text" class="form-control" placeholder="WebApps/MoblieApss/Network Security/Data Sciene, ext">
+          <input type="text" name="spesialisasi" class="form-control" placeholder="WebApps/MoblieApss/Network Security/Data Sciene, ext" required="">
         </div>
         <div class="form-group col-md-6">
           <label for="inputZip">Bahsa Pemograman</label>
-          <label for="inputState">Program Studi</label>
-          <select id="inputState" class="form-control">
+          <select id="inputState" name="bhs_program"  class="form-control">
             <option selected>Choose...</option>
             <option>PHP</option>
             <option>Ruby</option>
@@ -95,9 +95,7 @@
     </div>
   </div>
   <hr>
-  <div class="">
     <button type="submit" class="btn round btn-success mr-1 btn-glow">Submit <i class="ft-plus"></i></button>
-  </div>
 </form>
 
 {% endblock %}

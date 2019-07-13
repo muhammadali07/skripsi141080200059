@@ -1,12 +1,22 @@
 {% extends 'layout.html' %}
 {% block body %}
+{% include 'includes/_messages.html' %}
 <div class="">
   <a href="/add_data_dosen" class="btn round btn-danger mr-1 btn-glow">Input Data Dosen <i class="ft-plus"></i></a>
   <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
-  <div class="heading-elements">
-    <!-- <ul class="list-inline mb-0">
-      <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
-    </ul> -->
+</div>
+<div class="">
+<hr>
+</div>
+{% for item in data %}
+<div class="card" style="width: 18rem;">
+  <img class="card-img-top" src="https://pixinvent.com/modern-admin-clean-bootstrap-4-dashboard-html-template/app-assets/images/portrait/small/avatar-s-19.png" alt="Card image cap">
+  <div class="card-body">
+    <h5 class="card-title">{{item.2}}</h5>
+    <p class="card-text">Bidang Keilmuan = {{item.9}}</p>
+    <p class="card-text">Bahasa Pemograman = {{item.11}}</p>
+    <a href="#" class="btn btn-primary">Go somewhere</a>
   </div>
 </div>
+{% endfor %}
 {% endblock %}

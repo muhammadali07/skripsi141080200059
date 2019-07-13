@@ -244,6 +244,8 @@ def register():
    return render_template('login.html')
 
 # dosbim area
+
+
 @app.route('/dashboard_dosbim')
 @is_logged_in
 def dashboard_dosbim():
@@ -259,16 +261,59 @@ def dashboard_dosbim():
       return render_template('dashboard_dosbim.html', msg=msg)
    # Close Connectio
    cur.close()
+   
 # admin area
 @app.route('/dashboard_admin')
 def dashboard_admin():
-    return render_template('dashboard_admin.html')
 
-@app.route('/add_data_dosen')
+    cur = db.cursor(buffered=True)
+
+    result = cur.execute("SELECT * FROM dosen")
+    data = cur.fetchall()
+
+    if data > 0:
+       return render_template('dashboard_admin.html', data=data)
+    else:
+       msg = 'Tidak ada Pengajuan'
+       return render_template('dashboard_admin.html', msg=msg)
+    # Close Connectio
+    cur.close()
+
+
+@app.route('/add_data_dosen', methods=['GET', 'POST'])
 def add_data_dosen():
-    return render_template('add_data_dosen.html')
+   if request.method == 'POST':
+      nik_dosen = request.form['nik_dosen']
+      dosbim = request.form['dosbim']
+      alamat = request.form['alamat']
+      telp = request.form['telp']
+      fakultas = request.form['fakultas']
+      email_dosbim = request.form['email_dosbim']
+      pend_terakhir = request.form['pend_terakhir']
+      prodi = request.form['prodi']
+      bid_ilmu = request.form['bid_ilmu']
+      spesialisasi = request.form['spesialisasi']
+      bhs_program = request.form['bhs_program']
+
+      # create cursor
+      cur = db.cursor(buffered=True)
+
+      cur.execute("INSERT INTO dosen (nik_dosen,dosbim,alamat,telp,fakultas,email_dosbim,pend_terakhir,prodi,bid_ilmu,spesialisasi,bhs_program) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s )",
+                  (nik_dosen,dosbim,alamat,telp,fakultas,email_dosbim,pend_terakhir,prodi,bid_ilmu,spesialisasi,bhs_program))
+      # commit to DB
+      db.commit()
+
+      # close connection
+      cur.close()
+
+      flash(' Data Dosen Berhasil di Tambahkan', 'success')
+
+      return redirect(url_for('dashboard_admin'))
+   return render_template('add_data_dosen.html')
 
 # tanya-jawab
+
+
 @app.route('/tanya/<string:id>', methods=['GET', 'POST'])
 def tanya(id):
    # create cursor
