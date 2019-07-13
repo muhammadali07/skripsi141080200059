@@ -1,28 +1,32 @@
 {% extends 'layout.html' %}
 {% block body %}
-<button type="button" class="btn round btn-primary mr-1 btn-glow" data-toggle="modal" data-target=".bd-example-modal-lg">Jawab Pertanyaan</button>
-<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="container">
-        <div class="form-group">
-          <label for="exampleFormControlTextarea1">Jawab Pertanyaan</label>
-          <textarea id="sinopsis" name="chat" required=""></textarea>
+<form class="" action="" method="post">
+  <button type="button" class="btn round btn-primary mr-1 btn-glow" data-toggle="modal" data-target=".bd-example-modal-lg">Jawab Pertanyaan</button>
+  <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="container">
+          <div class="form-group">
+            <label for="exampleFormControlTextarea1">Jawab Pertanyaan</label>
+            <textarea id="sinopsis" name="chat" required=""></textarea>
+          </div>
+          <button type="submit" class="btn round btn-success mr-1 btn-glow">Jawab <i class="ft-plus"></i></button>
         </div>
-        <button type="submit" class="btn round btn-success mr-1 btn-glow">Jawab <i class="ft-plus"></i></button>
       </div>
     </div>
   </div>
-</div>
-<hr>
+  <hr>
+</form>
+
 
 {% for item in data %}
 <div class="container">
-  <h4>Subject : {{item.1}}</h4>
-  <h5>Pesan dari : {{item.3}}</h5>
   <img src="https://pixinvent.com/modern-admin-clean-bootstrap-4-dashboard-html-template/app-assets/images/portrait/small/avatar-s-19.png" alt="Avatar" style="width:100%;">
+  <div class="">
+    <small>Subject : {{item.1}} | Pesan dari : {{item.3}}</small> | waktu : {{item.5}} WIB
+  </div>
   <p>{{item.4}}</p>
-  <span class="time-right">{{item.5}}</span>
+
 </div>
 {% endfor %}
 {% endblock %}

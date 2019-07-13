@@ -1,0 +1,103 @@
+{% extends 'layout.html' %}
+{% block body %}
+<h1>Entry Data Dosen</h1>
+<hr>
+<form class="" action="" method="post">
+  <nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+      <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Data Dosen</a>
+      <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Riwayat pendidikan</a>
+      <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Bidang Keahlian</a>
+    </div>
+  </nav>
+  <div class="tab-content" id="nav-tabContent">
+    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+      <!-- data dosen -->
+      <div class="">
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="inputEmail4">NIDN Dosen Pembimbing</label>
+            <input type="text" class="form-control" id="inputEmail4" placeholder="NIDN Dosen Pembimbing">
+          </div>
+          <div class="form-group col-md-6">
+            <label for="inputPassword4">Nama Dosen Pembimbing</label>
+            <input type="text" class="form-control" id="inputPassword4" placeholder="Nama Dosen Pembimbing">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="inputAddress">Alamat Dosen Pembimbing</label>
+          <input type="text" class="form-control" id="inputAddress" placeholder="Alamat Dosen Pembimbing">
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label for="inputCity">No Telephone</label>
+            <input type="text" class="form-control" placeholder="No Telephone">
+          </div>
+          <div class="form-group col-md-4">
+            <label for="inputState">Fakultas Dosen Pembimbing</label>
+            <select id="inputState" class="form-control">
+              <option selected>Choose...</option>
+              <option>Teknik Informatika</option>
+              <option>Teknik Mesin</option>
+              <option>Teknik Pertanian</option>
+            </select>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="inputZip">Email Dosen Pembimbing</label>
+            <input type="email" class="form-control" id="inputZip" placeholder="Email Dosen Pembimbing">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+      <!-- riwayat pendidikan -->
+      <div class="form-row">
+        <div class="form-group col-md-4">
+          <label for="inputCity">Pendidikan Terakhir</label>
+          <input type="text" class="form-control" placeholder="Nama Universitas">
+        </div>
+        <div class="form-group col-md-4">
+          <label for="inputState">Program Studi</label>
+          <select id="inputState" class="form-control">
+            <option selected>Choose...</option>
+            <option>Teknik Informatika</option>
+            <option>Teknik Mesin</option>
+            <option>Teknik Pertanian</option>
+          </select>
+        </div>
+        <div class="form-group col-md-4">
+          <label for="inputZip">Bidang Keilmuan</label>
+          <input type="email" class="form-control" id="inputZip" placeholder="Email Dosen Pembimbing">
+        </div>
+      </div>
+    </div>
+    <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+      <!-- Bidang Keilmuan -->
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="inputCity">Spesialisasi </label>
+          <input type="text" class="form-control" placeholder="WebApps/MoblieApss/Network Security/Data Sciene, ext">
+        </div>
+        <div class="form-group col-md-6">
+          <label for="inputZip">Bahsa Pemograman</label>
+          <label for="inputState">Program Studi</label>
+          <select id="inputState" class="form-control">
+            <option selected>Choose...</option>
+            <option>PHP</option>
+            <option>Ruby</option>
+            <option>Java Script</option>
+            <option>Pyhton</option>
+            <option>Swift</option>
+            <option>Dart</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <div class="">
+    <button type="submit" class="btn round btn-success mr-1 btn-glow">Submit <i class="ft-plus"></i></button>
+  </div>
+</form>
+
+{% endblock %}

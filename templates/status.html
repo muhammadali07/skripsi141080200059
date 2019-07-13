@@ -3,6 +3,7 @@
 <div class="table-responsive">
   <table class="table-bordered table-sm">
     <thead>
+      {% include 'includes/_messages.html' %}
       <tr>
         <th sclass="border-top-0">NIK</th>
         <th class="border-top-0">Judul Tugas Akhir</th>
@@ -23,7 +24,7 @@
         <td class="text-truncate">
           <form action="{{url_for('delete_pengajuan',id=item.0)}}" method="post">
             <input type="hidden" name="_method" value="DELETE">
-            <input type="submit" value="delete" class="btn btn-danger">
+            <input type="submit" value="delete" class="btn round btn-danger mr-1 btn-glow">
           </form>
       </tr>
       {% endfor %}

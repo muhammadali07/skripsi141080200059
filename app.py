@@ -3,9 +3,13 @@ from wtforms import Form, StringField, TextAreaField, PasswordField, validators
 import mysql.connector
 from passlib.hash import sha256_crypt
 from functools import wraps
+from werkzeug import secure_filename
+import os
 
-
+UPLOAD_FOLDER = 'static/path/to/the/uploads'
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['SECRET_KEY'] = 'jsbcfsbfjefebw237u3gdbdc'
 
 config = {
@@ -35,6 +39,12 @@ def index():
                      [nik_session])
          rows = cur.fetchall()
          return render_template('dashboard.html')
+      elif session['level'] == 3:
+         cur = db.cursor(buffered=True)
+         cur.execute("SELECT * FROM users WHERE nik=%s",
+                     [nik_session])
+         rows = cur.fetchall()
+         return render_template('dashboard_admin.html')
       else:
          return render_template("eror.html")
    else:
@@ -53,8 +63,14 @@ def is_logged_in(f):
 
 
 @app.route('/dashboard')
+@is_logged_in
 def dashboard():
    return render_template('dashboard.html')
+
+
+def allowed_file(filename):
+   return '.' in filename and \
+          filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 @app.route('/add_pengajuan', methods=['GET', 'POST'])
@@ -63,14 +79,18 @@ def add_pengajuan():
    if request.method == 'POST':
       judul = request.form['judul']
       dosbim = request.form['dosbim']
-      # berkas = request.form['berkas']
+      file = request.files['file']
       sinopsis = request.form['sinopsis']
+
+      if file and allowed_file(file.filename):
+         filename = secure_filename(file.filename)
+         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
       # create cursor
       cur = db.cursor(buffered=True)
       # execute query
 
-      cur.execute("INSERT INTO pengajuan (nik,judul,dosbim,berkas,sinopsis,status) VALUES (%s,%s, %s, %s, %s, %s)",
-                  (session['nik'],judul, dosbim, 1, sinopsis,'Menunggu Konfirmasi'))
+      cur.execute("INSERT INTO pengajuan (nik,judul,dosbim,file,sinopsis,status) VALUES (%s,%s, %s, %s, %s, %s)",
+                  (session['nik'], judul, dosbim, filename, sinopsis, 'Menunggu Konfirmasi Dosen'))
 
       db.commit()
 
@@ -85,18 +105,19 @@ def add_pengajuan():
 @app.route('/status')
 @is_logged_in
 def status():
-    # yang bermasalah koneksi databasenya
-      cur = db.cursor(buffered=True)
-      result = cur.execute("SELECT * FROM pengajuan")
-      data = cur.fetchall()
+   # yang bermasalah koneksi databasenya
+   cur = db.cursor(buffered=True)
+   nik = session['nik']
+   result = cur.execute("SELECT * FROM pengajuan WHERE nik=%s", [nik])
+   data = cur.fetchall()
 
-      if data > 0:
-         return render_template('status.html', data=data)
-      else:
-         msg     = 'Tidak ada Pengajuan'
-         return render_template('status.html', msg=msg)
-      # Close Connectio
-      cur.close()
+   if data > 0:
+      return render_template('status.html', data=data)
+   else:
+      msg = 'Tidak ada Pengajuan'
+      return render_template('status.html', msg=msg)
+   # Close Connectio
+   cur.close()
 
 
 @app.route('/edit_pengajuan/<string:id>', methods=['GET', 'POST'])
@@ -150,6 +171,7 @@ def delete_pengajuan(id):
    flash('Pengajuan di Hapus', 'success')
 
    return redirect(url_for('status'))
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -221,22 +243,32 @@ def register():
       return redirect(url_for('login'))
    return render_template('login.html')
 
+# dosbim area
 @app.route('/dashboard_dosbim')
 @is_logged_in
 def dashboard_dosbim():
-    # yang bermasalah koneksi databasenya
-      cur = db.cursor(buffered=True)
-      result = cur.execute("SELECT * FROM pengajuan")
-      data = cur.fetchall()
+   # yang bermasalah koneksi databasenya
+   cur = db.cursor(buffered=True)
+   result = cur.execute("SELECT * FROM pengajuan")
+   data = cur.fetchall()
 
-      if data > 0:
-         return render_template('dashboard_dosbim.html', data=data)
-      else:
-         msg     = 'Tidak ada Pengajuan'
-         return render_template('dashboard_dosbim.html', msg=msg)
-      # Close Connectio
-      cur.close()
+   if data > 0:
+      return render_template('dashboard_dosbim.html', data=data)
+   else:
+      msg = 'Tidak ada Pengajuan'
+      return render_template('dashboard_dosbim.html', msg=msg)
+   # Close Connectio
+   cur.close()
+# admin area
+@app.route('/dashboard_admin')
+def dashboard_admin():
+    return render_template('dashboard_admin.html')
 
+@app.route('/add_data_dosen')
+def add_data_dosen():
+    return render_template('add_data_dosen.html')
+
+# tanya-jawab
 @app.route('/tanya/<string:id>', methods=['GET', 'POST'])
 def tanya(id):
    # create cursor
@@ -269,58 +301,62 @@ def tanya(id):
       return redirect(url_for('dashboard'))
    return render_template('tanya.html', data=data)
 
+
 @app.route('/approve/<string:id>', methods=['GET', 'POST'])
 def approve(id):
       # create cursor
-      cur = db.cursor(buffered=True)
+   cur = db.cursor(buffered=True)
 
-      # execute
-      cur.execute(
-          "UPDATE pengajuan SET status=%s WHERE id = %s", ('Pengajuan di terima',id))
+   # execute
+   cur.execute(
+       "UPDATE pengajuan SET status=%s WHERE id = %s", ('Pengajuan di terima', id))
 
-      # commit to DB
-      db.commit()
+   # commit to DB
+   db.commit()
 
-      # close connection
-      cur.close()
+   # close connection
+   cur.close()
 
-      flash('Approve Berhasil', 'success')
+   flash('Approve Berhasil', 'success')
 
-      return redirect(url_for('dashboard_dosbim'))
+   return redirect(url_for('dashboard_dosbim'))
+
 
 @app.route('/decline/<string:id>', methods=['GET', 'POST'])
 def decline(id):
-      # create cursor
-      cur = db.cursor(buffered=True)
+   # create cursor
+   cur = db.cursor(buffered=True)
 
-      # execute
-      cur.execute(
-          "UPDATE pengajuan SET status=%s WHERE id = %s", ('Pengajuan di tolak',id))
+   # execute
+   cur.execute(
+       "UPDATE pengajuan SET status=%s WHERE id = %s", ('Pengajuan di tolak', id))
 
-      # commit to DB
-      db.commit()
+   # commit to DB
+   db.commit()
 
-      # close connection
-      cur.close()
+   # close connection
+   cur.close()
 
-      flash('Maaf Pengajuan kamu di tolak, harap melakukan pengajuan ulang kakak', 'success')
+   flash('Maaf Pengajuan kamu di tolak, harap melakukan pengajuan ulang kakak', 'success')
 
-      return redirect(url_for('dashboard_dosbim'))
+   return redirect(url_for('dashboard_dosbim'))
+
 
 @app.route('/chat')
 def chat():
-    # yang bermasalah koneksi databasenya
-      cur = db.cursor(buffered=True)
-      result = cur.execute("SELECT * FROM chat ORDER BY register_date DESC")
-      data = cur.fetchall()
+   # yang bermasalah koneksi databasenya
+   cur = db.cursor(buffered=True)
+   result = cur.execute("SELECT * FROM chat ORDER BY register_date DESC")
+   data = cur.fetchall()
 
-      if data > 0:
-         return render_template('chat.html', data=data)
-      else:
-         msg     = 'Tidak ada Pengajuan'
-         return render_template('chat.html', msg=msg)
-      # Close Connectio
-      cur.close()
+   if data > 0:
+      return render_template('chat.html', data=data)
+   else:
+      msg = 'Tidak ada Pengajuan'
+      return render_template('chat.html', msg=msg)
+   # Close Connectio
+   cur.close()
+
 
 @app.route('/logout')
 def logout():
