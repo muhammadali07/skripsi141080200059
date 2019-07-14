@@ -76,6 +76,12 @@ def allowed_file(filename):
 @app.route('/add_pengajuan', methods=['GET', 'POST'])
 @is_logged_in
 def add_pengajuan():
+   cur = db.cursor(buffered=True)
+
+   # get article
+   result = cur.execute("SELECT * FROM dosen")
+   data = cur.fetchall()
+
    if request.method == 'POST':
       judul = request.form['judul']
       dosbim = request.form['dosbim']
@@ -99,7 +105,7 @@ def add_pengajuan():
       flash(' Pengajuan berhasil, Cek status pengajuan', 'success')
 
       return redirect(url_for('status'))
-   return render_template('add_pengajuan.html')
+   return render_template('add_pengajuan.html', data=data)
 
 
 @app.route('/status')
@@ -244,13 +250,12 @@ def register():
    return render_template('login.html')
 
 # dosbim area
-
-
 @app.route('/dashboard_dosbim')
 @is_logged_in
 def dashboard_dosbim():
    # yang bermasalah koneksi databasenya
    cur = db.cursor(buffered=True)
+   # dosbim = session['dosbim']
    result = cur.execute("SELECT * FROM pengajuan")
    data = cur.fetchall()
 
@@ -261,7 +266,7 @@ def dashboard_dosbim():
       return render_template('dashboard_dosbim.html', msg=msg)
    # Close Connectio
    cur.close()
-   
+
 # admin area
 @app.route('/dashboard_admin')
 def dashboard_admin():
