@@ -84,9 +84,14 @@ def add_pengajuan():
 
    if request.method == 'POST':
       judul = request.form['judul']
-      dosbim = request.form['dosbim']
+      nik_dosen = request.form['dosbim']
       file = request.files['file']
       sinopsis = request.form['sinopsis']
+
+      res = cur.execute("SELECT * FROM dosen where nik_dosen="+nik_dosen)
+      dat = cur.fetchall()
+      dosbim = dat[0][2]
+      print(nik_dosen)
 
       if file and allowed_file(file.filename):
          filename = secure_filename(file.filename)
@@ -95,8 +100,8 @@ def add_pengajuan():
       cur = db.cursor(buffered=True)
       # execute query
 
-      cur.execute("INSERT INTO pengajuan (nik,judul,dosbim,file,sinopsis,status) VALUES (%s,%s, %s, %s, %s, %s)",
-                  (session['nik'], judul, dosbim, filename, sinopsis, 'Menunggu Konfirmasi Dosen'))
+      cur.execute("INSERT INTO pengajuan (nik,judul,nik_dosen,dosbim,file,sinopsis,status) VALUES (%s,%s, %s, %s,%s, %s, %s)",
+                  (session['nik'], judul, nik_dosen, dosbim, filename, sinopsis, 'Menunggu Konfirmasi Dosen'))
 
       db.commit()
 
@@ -132,6 +137,11 @@ def edit_pengajuan(id):
    # create cursor
    cur = db.cursor(buffered=True)
 
+   result = cur.execute("SELECT * FROM dosen")
+   dosen = cur.fetchall()
+
+   cur = db.cursor(buffered=True)
+
    # get article by id
    result = cur.execute("SELECT * FROM pengajuan WHERE id = %s", [id])
    data = cur.fetchall()
@@ -157,7 +167,7 @@ def edit_pengajuan(id):
       flash('Update Berhasil', 'success')
 
       return redirect(url_for('status'))
-   return render_template('edit.html', data=data)
+   return render_template('edit.html', data=data, dosen=dosen)
 
 
 @app.route('/delete_pengajuan/<string:id>', methods=['POST'])
@@ -255,7 +265,12 @@ def register():
 def dashboard_dosbim():
    # yang bermasalah koneksi databasenya
    cur = db.cursor(buffered=True)
-   # dosbim = session['dosbim']
+   # result = cur.execute("SELECT * FROM users")
+   # dat = cur.fetchall()
+   # session['nik'] = dat[0][2]
+   # nik_dosen = session['nik']
+   # print(nik_dosen)
+   # result = cur.execute("SELECT * FROM pengajuan WHERE nik_dosen=%s",[nik_dosen])
    result = cur.execute("SELECT * FROM pengajuan")
    data = cur.fetchall()
 

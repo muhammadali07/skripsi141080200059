@@ -12,8 +12,9 @@
         <div class="form-group">
           <label for="exampleFormControlSelect1">Pilih Dosen Pembimbing</label>
           <select name="dosbim" class="form-control" id="exampleFormControlSelect1" required="">
+            <!-- ini buat nampilin dosen tadi -->
             {% for item in data %}
-            <option>{{item.1}} - {{item.2}}</option>
+            <option value="{{item.1}}">{{item.2}}</option>
             {% endfor %}
           </select>
         </div>

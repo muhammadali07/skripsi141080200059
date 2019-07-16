@@ -12,11 +12,9 @@
         <div class="form-group">
           <label for="exampleFormControlSelect1">Pilih Dosen Pembimbing</label>
           <select name="dosbim" class="form-control" id="exampleFormControlSelect1" required="" value="{{item.3}}">
-            <option>Arief Senja, S.Kom,. .M.Kom</option>
-            <option>Irwan A. Kautsar. S.Kom,. M.Kom,. Ph.D</option>
-            <option>Dr. Hindarto ST,.MT</option>
-            <option>A'syiari,ST,. MT.</option>
-            <option>Cindy Cahyaning Astuti., S.Si., M.Si.</option>
+            {% for data in dosen %}
+            <option>{{data.2}}</option>
+            {% endfor %}
           </select>
         </div>
         <!-- <div class="form-group">
@@ -25,7 +23,7 @@
         </div> -->
         <div class="form-group">
           <label for="exampleFormControlTextarea1">Sinopsis Tugas Akhir</label>
-          <textarea id="sinopsis" name="sinopsis" required="">{{item.5}}</textarea>
+          <textarea id="sinopsis" name="sinopsis" required="">{{item.6}}</textarea>
         </div>
         <button type="submit" class="btn round btn-success mr-1 btn-glow">Update Pengajuan <i class="ft-plus"></i></button>
         {% endfor %}

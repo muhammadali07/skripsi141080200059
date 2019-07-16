@@ -1,6 +1,6 @@
 {% extends 'layout.html' %}
 {% block body %}
-<div class="table-responsive">
+<div class="container">
   <table class="table-bordered table-sm">
     <thead>
       {% include 'includes/_messages.html' %}
@@ -9,7 +9,6 @@
         <th class="border-top-0">Judul Tugas Akhir</th>
         <th class="border-top-0">Dosen Pembimbing</th>
         <th class="border-top-0">Status</th>
-        <th class="border-top-0"></th>
       </tr>
     </thead>
     <tbody>
@@ -17,8 +16,8 @@
       <tr>
         <td class="text-truncate">{{item.1}}</td>
         <td class="text-truncate">{{item.2}}</td>
-        <td class="text-truncate">{{item.3}}</td>
-        <td class="text-truncate">{{item.6}}</td>
+        <td class="text-truncate">{{item.4}}</td>
+        <td class="text-truncate">{{item.7}}</td>
         <td class="text-truncate">
           <a href="/edit_pengajuan/{{item.0}}"><button type="submit" class="btn round btn-primary mr-1 btn-glow">Edit <i class="ft-plus"></i></button></a></td>
         <td class="text-truncate">
