@@ -265,13 +265,12 @@ def register():
 def dashboard_dosbim():
    # yang bermasalah koneksi databasenya
    cur = db.cursor(buffered=True)
-   # result = cur.execute("SELECT * FROM users")
-   # dat = cur.fetchall()
-   # session['nik'] = dat[0][2]
-   # nik_dosen = session['nik']
-   # print(nik_dosen)
-   # result = cur.execute("SELECT * FROM pengajuan WHERE nik_dosen=%s",[nik_dosen])
-   result = cur.execute("SELECT * FROM pengajuan")
+   nik = session['nik']
+   res = cur.execute("select * from users where nik="+nik)
+   dat = cur.fetchall()
+   nik_dosen = dat[0][2]
+   print(nik_dosen)
+   result = cur.execute("SELECT * FROM pengajuan where nik_dosen='{0}'".format(nik_dosen,))
    data = cur.fetchall()
 
    if data > 0:
