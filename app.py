@@ -72,7 +72,7 @@ def allowed_file(filename):
    return '.' in filename and \
           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-
+# area mahasiswa
 @app.route('/add_pengajuan', methods=['GET', 'POST'])
 @is_logged_in
 def add_pengajuan():
@@ -88,7 +88,7 @@ def add_pengajuan():
       file = request.files['file']
       sinopsis = request.form['sinopsis']
 
-      res = cur.execute("SELECT * FROM dosen where nik_dosen="+nik_dosen)
+      res = cur.execute("SELECT * FROM dosen where nik_dosen=" + nik_dosen)
       dat = cur.fetchall()
       dosbim = dat[0][2]
       print(nik_dosen)
@@ -148,15 +148,19 @@ def edit_pengajuan(id):
 
    if request.method == 'POST':
       judul = request.form['judul']
-      dosbim = request.form['dosbim']
+      nik_dosen = request.form['dosbim']
       sinopsis = request.form['sinopsis']
+
+      res = cur.execute("SELECT * FROM dosen where nik_dosen=" + nik_dosen)
+      dat = cur.fetchall()
+      dosbim = dat[0][2]
+      print(nik_dosen)
 
       # create cursor
       cur = db.cursor(buffered=True)
-
       # execute
       cur.execute(
-          "UPDATE pengajuan SET judul=%s, dosbim=%s, sinopsis=%s WHERE id = %s", (judul, dosbim, sinopsis, id))
+          "UPDATE pengajuan SET nik_dosen=%s, judul=%s, dosbim=%s, sinopsis=%s WHERE id = %s", (nik_dosen, judul, dosbim, sinopsis, id))
 
       # commit to DB
       db.commit()
@@ -187,6 +191,11 @@ def delete_pengajuan(id):
    flash('Pengajuan di Hapus', 'success')
 
    return redirect(url_for('status'))
+
+# bimbingan
+@app.route('/bimbingan/<string:id>', methods=['GET', 'POST'])
+def bimbingan(id):
+    return render_template("bimbingan.html")
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -266,11 +275,12 @@ def dashboard_dosbim():
    # yang bermasalah koneksi databasenya
    cur = db.cursor(buffered=True)
    nik = session['nik']
-   res = cur.execute("select * from users where nik="+nik)
+   res = cur.execute("select * from users where nik=" + nik)
    dat = cur.fetchall()
    nik_dosen = dat[0][2]
    print(nik_dosen)
-   result = cur.execute("SELECT * FROM pengajuan where nik_dosen='{0}'".format(nik_dosen,))
+   result = cur.execute(
+       "SELECT * FROM pengajuan where nik_dosen='{0}'".format(nik_dosen,))
    data = cur.fetchall()
 
    if data > 0:
@@ -285,18 +295,18 @@ def dashboard_dosbim():
 @app.route('/dashboard_admin')
 def dashboard_admin():
 
-    cur = db.cursor(buffered=True)
+   cur = db.cursor(buffered=True)
 
-    result = cur.execute("SELECT * FROM dosen")
-    data = cur.fetchall()
+   result = cur.execute("SELECT * FROM dosen")
+   data = cur.fetchall()
 
-    if data > 0:
-       return render_template('dashboard_admin.html', data=data)
-    else:
-       msg = 'Tidak ada Pengajuan'
-       return render_template('dashboard_admin.html', msg=msg)
-    # Close Connectio
-    cur.close()
+   if data > 0:
+      return render_template('dashboard_admin.html', data=data)
+   else:
+      msg = 'Tidak ada Pengajuan'
+      return render_template('dashboard_admin.html', msg=msg)
+   # Close Connectio
+   cur.close()
 
 
 @app.route('/add_data_dosen', methods=['GET', 'POST'])
@@ -318,7 +328,7 @@ def add_data_dosen():
       cur = db.cursor(buffered=True)
 
       cur.execute("INSERT INTO dosen (nik_dosen,dosbim,alamat,telp,fakultas,email_dosbim,pend_terakhir,prodi,bid_ilmu,spesialisasi,bhs_program) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s )",
-                  (nik_dosen,dosbim,alamat,telp,fakultas,email_dosbim,pend_terakhir,prodi,bid_ilmu,spesialisasi,bhs_program))
+                  (nik_dosen, dosbim, alamat, telp, fakultas, email_dosbim, pend_terakhir, prodi, bid_ilmu, spesialisasi, bhs_program))
       # commit to DB
       db.commit()
 
@@ -330,41 +340,7 @@ def add_data_dosen():
       return redirect(url_for('dashboard_admin'))
    return render_template('add_data_dosen.html')
 
-# tanya-jawab
-
-
-@app.route('/tanya/<string:id>', methods=['GET', 'POST'])
-def tanya(id):
-   # create cursor
-   cur = db.cursor(buffered=True)
-
-   # get article by id
-   result = cur.execute("SELECT * FROM pengajuan WHERE id = %s", [id])
-   data = cur.fetchall()
-
-   if request.method == 'POST':
-      judul = request.form['judul']
-      dosbim = request.form['dosbim']
-      chat = request.form['chat']
-
-      # create cursor
-      cur = db.cursor(buffered=True)
-
-      # execute
-      cur.execute("INSERT INTO chat (judul, nik, dosbim, chat) VALUES (%s, %s, %s, %s)",
-                  (judul, session['nik'], dosbim, chat))
-
-      # commit to DB
-      db.commit()
-
-      # close connection
-      cur.close()
-
-      flash('Pertanyaan di ajukan', 'success')
-
-      return redirect(url_for('dashboard'))
-   return render_template('tanya.html', data=data)
-
+# action dosen accpet-decline
 
 @app.route('/approve/<string:id>', methods=['GET', 'POST'])
 def approve(id):
@@ -405,6 +381,8 @@ def decline(id):
 
    return redirect(url_for('dashboard_dosbim'))
 
+# chat
+
 
 @app.route('/chat')
 def chat():
@@ -421,11 +399,46 @@ def chat():
    # Close Connectio
    cur.close()
 
+# tanya-jawab
+
+
+@app.route('/tanya/<string:id>', methods=['GET', 'POST'])
+def tanya(id):
+   # create cursor
+   cur = db.cursor(buffered=True)
+
+   # get article by id
+   result = cur.execute("SELECT * FROM pengajuan WHERE id = %s", [id])
+   data = cur.fetchall()
+
+   if request.method == 'POST':
+      judul = request.form['judul']
+      dosbim = request.form['dosbim']
+      chat = request.form['chat']
+
+      # create cursor
+      cur = db.cursor(buffered=True)
+
+      # execute
+      cur.execute("INSERT INTO chat (judul, nik, dosbim, chat) VALUES (%s, %s, %s, %s)",
+                  (judul, session['nik'], dosbim, chat))
+
+      # commit to DB
+      db.commit()
+
+      # close connection
+      cur.close()
+
+      flash('Pertanyaan di ajukan', 'success')
+
+      return redirect(url_for('dashboard'))
+   return render_template('tanya.html', data=data)
+
 
 @app.route('/logout')
 def logout():
    session.clear()
-   flash('Thanks you, You are logged out', 'success')
+   flash('Terima Kasih, Log Out Berhasil', 'success')
    return redirect(url_for('index'))
 
 

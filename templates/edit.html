@@ -13,7 +13,7 @@
           <label for="exampleFormControlSelect1">Pilih Dosen Pembimbing</label>
           <select name="dosbim" class="form-control" id="exampleFormControlSelect1" required="" value="{{item.3}}">
             {% for data in dosen %}
-            <option>{{data.2}}</option>
+            <option value="{{data.1}}">{{data.2}}</option>
             {% endfor %}
           </select>
         </div>
