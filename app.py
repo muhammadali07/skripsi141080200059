@@ -73,6 +73,8 @@ def allowed_file(filename):
           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # area mahasiswa
+
+
 @app.route('/add_pengajuan', methods=['GET', 'POST'])
 @is_logged_in
 def add_pengajuan():
@@ -195,7 +197,50 @@ def delete_pengajuan(id):
 # bimbingan
 @app.route('/bimbingan/<string:id>', methods=['GET', 'POST'])
 def bimbingan(id):
-    return render_template("bimbingan.html")
+    cur = db.cursor(buffered=True)
+    result = cur.execute("SELECT * FROM pengajuan where id=%s", [id])
+    data = cur.fetchall()
+
+    if data > 0:
+       return render_template('bimbingan.html', data=data)
+    else:
+       msg = 'Tidak ada Pengajuan'
+       return render_template('bimbingan.html', msg=msg)
+    # Close Connectio
+    cur.close()
+
+
+@app.route('/add_bimbingan', methods=['GET', 'POST'])
+def add_bimbingan():
+    cur = db.cursor(buffered=True)
+
+    result = cur.execute("SELECT * FROM pengajuan")
+    data = cur.fetchall()
+    nik = data[0][2]
+    print(nik)
+    result = cur.execute("SELECT id FROM pengajuan WHERE nik='{0}'".format(nik,))
+    dat = cur.fetchall()
+    id_bim = dat[0]
+
+    if request.method == 'POST':
+        nik = request.form['nik']
+        nik_dosen = request.form['nik_dosen']
+        catatan = request.form['catatan']
+
+        cur = db.cursor(buffered=True)
+
+        cur.execute("INSERT INTO bimbingan (nik, nik_dosen,dosbim, catatan) VALUES (%s, %s, %s, %s)",
+                    (nik, nik_dosen,1, catatan))
+
+        db.commit()
+
+        # close connection
+        cur.close()
+
+        flash(' Catatan di tambahkan', 'success')
+
+        return redirect(url_for('bimbingan',id='id_bim'))
+    return render_template('bimbingan.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -383,7 +428,6 @@ def decline(id):
 
 # chat
 
-
 @app.route('/chat')
 def chat():
    # yang bermasalah koneksi databasenya
@@ -400,7 +444,6 @@ def chat():
    cur.close()
 
 # tanya-jawab
-
 
 @app.route('/tanya/<string:id>', methods=['GET', 'POST'])
 def tanya(id):

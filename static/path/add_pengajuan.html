@@ -1,0 +1,34 @@
+{% extends 'layout.html' %}
+{% block body %}
+<div class="container-fluid">
+  <div class="heading-elements">
+    {% include 'includes/_messages.html' %}
+    <div class="container-fluid">
+      <form action="/add_pengajuan" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+          <label for="exampleInputEmail1">Judul Tugas Akhir</label>
+          <input type="text" name="judul" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Masukkan Judul Tugas Akhir" required="">
+        </div>
+        <div class="form-group">
+          <label for="exampleFormControlSelect1">Pilih Dosen Pembimbing</label>
+          <select name="dosbim" class="form-control" id="exampleFormControlSelect1" required="">
+            <!-- ini buat nampilin dosen tadi -->
+            {% for item in data %}
+            <option value="{{item.1}}">{{item.2}}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">Unggah Berkas</label>
+          <input type="file" name="file" class="form-control" id="exampleInputPassword1" placeholder="Password">
+        </div>
+        <div class="form-group">
+          <label for="exampleFormControlTextarea1">Sinopsis Tugas Akhir</label>
+          <textarea id="sinopsis" name="sinopsis" required=""></textarea>
+        </div>
+        <button type="submit" class="btn round btn-success mr-1 btn-glow">Ajukan Judul <i class="ft-plus"></i></button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

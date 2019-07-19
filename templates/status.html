@@ -1,33 +1,42 @@
 {% extends 'layout.html' %}
 {% block body %}
-<div class="table-responsive">
-  <table class="table-bordered table-sm">
-    <thead>
-      {% include 'includes/_messages.html' %}
-      <tr>
-        <th sclass="border-top-0">NIK</th>
-        <th class="border-top-0">Judul Tugas Akhir</th>
-        <th class="border-top-0">Dosen Pembimbing</th>
-        <th class="border-top-0">Status</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for item in data %}
-      <tr>
-        <td class="text-truncate">{{item.1}}</td>
-        <td class="text-truncate">{{item.2}}</td>
-        <td class="text-truncate">{{item.4}}</td>
-        <td class="text-truncate">{{item.7}}</td>
-        <td class="text-truncate">
-          <a href="/edit_pengajuan/{{item.0}}"><button type="submit" class="btn round btn-primary mr-1 btn-glow">Edit <i class="ft-plus"></i></button></a></td>
-        <td class="text-truncate">
-          <form action="{{url_for('delete_pengajuan',id=item.0)}}" method="post">
-            <input type="hidden" name="_method" value="DELETE">
-            <input type="submit" value="delete" class="btn round btn-danger mr-1 btn-glow">
-          </form>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+<div id="recent-sales" class="col-4 col-md-12">
+  <div class="card">
+    <div class="card-header">
+      <h4 class="card-title">Data Pengajuan Proposal</h4>
+      <div class="card-content mt-1">
+        <div class="table-responsive">
+          <table id="recent-orders" class="table table-hover table-xl mb-0">
+            <thead>
+              {% include 'includes/_messages.html' %}
+              <tr>
+                <th sclass="border-top-0">NIK</th>
+                <th class="border-top-0">Judul Tugas Akhir</th>
+                <th class="border-top-0">Dosen Pembimbing</th>
+                <th class="border-top-0">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in data %}
+              <tr>
+                <td class="text-truncate"><a href="/bimbingan/{{item.0}}">{{item.1}}</a></td>
+                <td class="text-truncate">{{item.2}}</td>
+                <td class="text-truncate">{{item.4}}</td>
+                <td class="text-truncate">{{item.7}}</td>
+                <td class="text-truncate">
+                  <a href="/edit_pengajuan/{{item.0}}"><button type="submit" class="btn round btn-primary mr-1 btn-glow">Edit <i class="ft-plus"></i></button></a></td>
+                <td class="text-truncate">
+                  <form action="{{url_for('delete_pengajuan',id=item.0)}}" method="post">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <input type="submit" value="delete" class="btn round btn-danger mr-1 btn-glow">
+                  </form>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock %}

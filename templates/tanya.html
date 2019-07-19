@@ -1,35 +1,38 @@
 {% extends 'layout.html' %}
 {% block body %}
-<div class="container-fluid">
-  <div class="heading-elements">
-    <div class="container-fluid">
-      <form action="" method="post">
-        {% for item in data %}
-        <div class="form-group">
-          <label for="exampleInputEmail1">Judul Tugas Akhir</label>
-          <input type="text" name="judul" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Masukkan Judul Tugas Akhir" required="" value="{{item.2}}">
-        </div>
-        <div class="form-group">
-          <label for="exampleFormControlSelect1">Pilih Dosen Pembimbing</label>
-          <select name="dosbim" class="form-control" id="exampleFormControlSelect1" required="" value="{{item.3}}">
-            <option>Arief Senja, S.Kom,. .M.Kom</option>
-            <option>Irwan A. Kautsar. S.Kom,. M.Kom,. Ph.D</option>
-            <option>Dr. Hindarto ST,.MT</option>
-            <option>A'syiari,ST,. MT.</option>
-            <option>Cindy Cahyaning Astuti., S.Si., M.Si.</option>
-          </select>
-        </div>
-        <!-- <div class="form-group">
-          <label for="exampleInputPassword1">Unggah Berkas</label>
-          <input type="file" name="berkas" class="form-control" id="exampleInputPassword1" placeholder="Password">
-        </div> -->
-        <div class="form-group">
-          <label for="exampleFormControlTextarea1">Ajukan Pertanyaan</label>
-          <textarea id="sinopsis" name="chat" required=""></textarea>
-        </div>
-        <button type="submit" class="btn round btn-success mr-1 btn-glow">Tanya <i class="ft-plus"></i></button>
-        {% endfor %}
-      </form>
+<div class="card">
+  <div class="container-fluid">
+    <div class="heading-elements">
+      <div class="container-fluid">
+        <h4 class="card-title">Ajukan Pertanyaan</h4>
+        <form action="" method="post">
+          {% for item in data %}
+          <div class="form-group">
+            <label for="exampleInputEmail1">Judul Tugas Akhir</label>
+            <input type="text" name="judul" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Masukkan Judul Tugas Akhir" required="" value="{{item.2}}">
+          </div>
+          <div class="form-group">
+            <label for="exampleFormControlSelect1">Pilih Dosen Pembimbing</label>
+            <select name="dosbim" class="form-control" id="exampleFormControlSelect1" required="" value="{{item.3}}">
+              <option>Arief Senja, S.Kom,. .M.Kom</option>
+              <option>Irwan A. Kautsar. S.Kom,. M.Kom,. Ph.D</option>
+              <option>Dr. Hindarto ST,.MT</option>
+              <option>A'syiari,ST,. MT.</option>
+              <option>Cindy Cahyaning Astuti., S.Si., M.Si.</option>
+            </select>
+          </div>
+          <!-- <div class="form-group">
+            <label for="exampleInputPassword1">Unggah Berkas</label>
+            <input type="file" name="berkas" class="form-control" id="exampleInputPassword1" placeholder="Password">
+          </div> -->
+          <div class="form-group">
+            <label for="exampleFormControlTextarea1">Ajukan Pertanyaan</label>
+            <textarea id="sinopsis" name="chat" required=""></textarea>
+          </div>
+          <button type="submit" class="btn round btn-success mr-1 btn-glow">Tanya <i class="ft-plus"></i></button>
+          {% endfor %}
+        </form>
+      </div>
     </div>
   </div>
 </div>
