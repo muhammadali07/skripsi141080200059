@@ -1,8 +1,8 @@
 {% extends 'layout.html' %}
 {% block body %}
-{% include 'includes/_messages.html' %}
 <div id="recent-sales" class="col-4 col-md-12">
   <div class="card">
+    {% include 'includes/_messages.html' %}
     <div class="card-header">
       {% for item in data %}
       <h4 class="card-title">Bimbingan Proposal</h4>
@@ -25,10 +25,9 @@
         <button type="button" class="btn round btn-danger mr-1 btn-glow" data-toggle="modal" data-target="#exampleModalLong">
           Berikan Catatan
         </button>
-
         <!-- Modal -->
         {% for item in data %}
-        <form class="" action="{{url_for('add_bimbingan')}}" method="POST">
+        <form class="" action="{{url_for('add_bimbingan')}}" method="POST" enctype="multipart/form-data">
           <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
@@ -61,11 +60,11 @@
                             Lampiran
                           </label>
                         </div>
-                        <!-- <input class="btn round btn-danger mr-1 btn-glow" type="file" id="gridCheck"> -->
+                        <input class="btn round btn-danger mr-1 btn-glow" type="file" name="file" id="gridCheck">
                       </div>
                 </div>
                 <div class="modal-footer">
-                  <!-- <button type="button" class="btn round btn-secondary mr-1 btn-glow" data-dismiss="modal">Keluar</button> -->
+                  <button type="button" class="btn round btn-secondary mr-1 btn-glow" data-dismiss="modal">Keluar</button>
                   <button type="submit" class="btn round btn-primary mr-1 btn-glow">Simpan</button>
                 </div>
               </div>
@@ -78,5 +77,18 @@
     {% endfor %}
   </div>
 </div>
+<!-- show discuss -->
+<div class="">
+  <div class="container">
+    <img src="https://pixinvent.com/modern-admin-clean-bootstrap-4-dashboard-html-template/app-assets/images/portrait/small/avatar-s-19.png" alt="Avatar" style="width:100%;">
+    <div class="">
+      <small>Subject : | Pesan dari : </small> | waktu : WIB
+    </div>
+    <div class="container-fluid">
+      <div class="">
+        <img src="" class="" alt="">
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock %}

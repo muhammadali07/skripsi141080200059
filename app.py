@@ -209,28 +209,32 @@ def bimbingan(id):
     # Close Connectio
     cur.close()
 
+def allowed_file(filename):
+   return '.' in filename and \
+          filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @app.route('/add_bimbingan', methods=['GET', 'POST'])
 def add_bimbingan():
     cur = db.cursor(buffered=True)
 
-    result = cur.execute("SELECT * FROM pengajuan")
-    data = cur.fetchall()
-    nik = data[0][2]
-    print(nik)
-    result = cur.execute("SELECT id FROM pengajuan WHERE nik='{0}'".format(nik,))
-    dat = cur.fetchall()
-    id_bim = dat[0]
-
     if request.method == 'POST':
         nik = request.form['nik']
         nik_dosen = request.form['nik_dosen']
         catatan = request.form['catatan']
+        file = request.files['file']
 
         cur = db.cursor(buffered=True)
 
-        cur.execute("INSERT INTO bimbingan (nik, nik_dosen,dosbim, catatan) VALUES (%s, %s, %s, %s)",
-                    (nik, nik_dosen,1, catatan))
+        res=cur.execute("SELECT id FROM pengajuan WHERE nik="+nik)
+        dat=cur.fetchone()
+        id = dat[0]
+
+        if file and allowed_file(file.filename):
+           filename = secure_filename(file.filename)
+           file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+        cur.execute("INSERT INTO bimbingan (nik, nik_dosen,dosbim, catatan, file) VALUES (%s, %s, %s, %s, %s)",
+                    (nik, nik_dosen,1, catatan,filename))
 
         db.commit()
 
@@ -239,7 +243,7 @@ def add_bimbingan():
 
         flash(' Catatan di tambahkan', 'success')
 
-        return redirect(url_for('bimbingan',id='id_bim'))
+        return redirect(url_for('bimbingan',id=id))
     return render_template('bimbingan.html')
 
 
