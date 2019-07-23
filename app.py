@@ -198,11 +198,16 @@ def delete_pengajuan(id):
 @app.route('/bimbingan/<string:id>', methods=['GET', 'POST'])
 def bimbingan(id):
     cur = db.cursor(buffered=True)
+
     result = cur.execute("SELECT * FROM pengajuan where id=%s", [id])
     data = cur.fetchall()
 
+    nik = session['nik']
+    result = cur.execute("select * from bimbingan where nik=%s",[nik])
+    bim = cur.fetchall()
+
     if data > 0:
-       return render_template('bimbingan.html', data=data)
+       return render_template('bimbingan.html', data=data, bim=bim)
     else:
        msg = 'Tidak ada Pengajuan'
        return render_template('bimbingan.html', msg=msg)
@@ -223,15 +228,15 @@ def add_bimbingan():
         catatan = request.form['catatan']
         file = request.files['file']
 
+        if file and allowed_file(file.filename):
+           filename = secure_filename(file.filename)
+           file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
         cur = db.cursor(buffered=True)
 
         res=cur.execute("SELECT id FROM pengajuan WHERE nik="+nik)
         dat=cur.fetchone()
         id = dat[0]
-
-        if file and allowed_file(file.filename):
-           filename = secure_filename(file.filename)
-           file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
         cur.execute("INSERT INTO bimbingan (nik, nik_dosen,dosbim, catatan, file) VALUES (%s, %s, %s, %s, %s)",
                     (nik, nik_dosen,1, catatan,filename))
@@ -491,5 +496,4 @@ def logout():
 
 app.secret_key = 'secret123'
 if __name__ == '__main__':
-
    app.run(debug=True)

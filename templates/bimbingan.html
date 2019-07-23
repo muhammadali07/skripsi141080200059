@@ -25,6 +25,9 @@
         <button type="button" class="btn round btn-danger mr-1 btn-glow" data-toggle="modal" data-target="#exampleModalLong">
           Berikan Catatan
         </button>
+        <button type="button" class="btn round btn-success mr-1 btn-glow" data-toggle="modal" data-target="#exampleModalLong2">
+          Ajukan Sidang
+        </button>
         <!-- Modal -->
         {% for item in data %}
         <form class="" action="{{url_for('add_bimbingan')}}" method="POST" enctype="multipart/form-data">
@@ -39,56 +42,102 @@
                 </div>
                 <div class="modal-body">
                   <!-- area bimbingan -->
-                    <div class="form-row">
-                      <div class="form-group col-md-6">
-                        <label for="inputEmail4">Mahasiswa</label>
-                        <input type="text" name="nik" class="form-control" id="inputEmail4" value="{{item.1}}">
-                      </div>
-                      <div class="form-group col-md-6">
-                        <label for="inputPassword4">Dosen</label>
-                        <input type="text" name ="nik_dosen" class="form-control" id="inputPassword4" value="{{item.4}}">
-                      </div>
+                  <div class="form-row">
+                    <div class="form-group col-md-6">
+                      <label for="inputEmail4">Mahasiswa</label>
+                      <input type="text" name="nik" class="form-control" id="inputEmail4" value="{{item.1}}">
                     </div>
-                    <div class="form-group">
-                      <label for="exampleFormControlTextarea1">Catatan</label>
-                      <textarea id="sinopsis" name="catatan" required=""></textarea>
+                    <div class="form-group col-md-6">
+                      <label for="inputPassword4">Dosen</label>
+                      <input type="text" name="nik_dosen" class="form-control" id="inputPassword4" value="{{item.4}}">
                     </div>
-                    <div class="form-group">
-                      <div class="form-check">
-                        <div class="">
-                          <label class="form-check-label" for="gridCheck">
-                            Lampiran
-                          </label>
-                        </div>
-                        <input class="btn round btn-danger mr-1 btn-glow" type="file" name="file" id="gridCheck">
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleFormControlTextarea1">Catatan</label>
+                    <textarea id="sinopsis" name="catatan" required=""></textarea>
+                  </div>
+                  <div class="form-group">
+                    <div class="form-check">
+                      <div class="">
+                        <label class="form-check-label" for="gridCheck">
+                          Lampiran
+                        </label>
                       </div>
+                      <input class="btn round btn-danger mr-1 btn-glow" type="file" name="file" id="gridCheck">
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn round btn-secondary mr-1 btn-glow" data-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn round btn-primary mr-1 btn-glow">Simpan</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </form>
+        {% endfor %}
+      </div>
+      <!-- ajukan sidang -->
+      <div class="">
+        <form>
+          <div class="modal fade" id="exampleModalLong2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLongTitle">Ajukan Sidang</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="form-row">
+                    <div class="form-group col-md-6">
+                      <label for="inputEmail4">Tanggal</label>
+                      
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label for="inputPassword4">Pukul</label>
+                      <input type="time" class="form-control" id="inputPassword4" placeholder="waktu">
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group col-md-12">
+                      <label for="inputState">Pilih Kelas</label>
+                      <select id="inputState" class="form-control">
+                        <option selected>Choose...</option>
+                        <option>...</option>
+                      </select>
+                    </div>
+                  </div>
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn round btn-secondary mr-1 btn-glow" data-dismiss="modal">Keluar</button>
-                  <button type="submit" class="btn round btn-primary mr-1 btn-glow">Simpan</button>
+                  <button type="button" class="btn round btn-secondary mr-1 btn-glow" data-dismiss="modal">Batal</button>
+                  <button type="button" class="btn round btn-primary mr-1 btn-glow">Ajukan</button>
                 </div>
               </div>
             </div>
           </div>
         </form>
-        {% endfor %}
       </div>
     </div>
     {% endfor %}
   </div>
 </div>
 <!-- show discuss -->
-<div class="">
+{% for dat in bim %}
+<div class="container_chat card">
+  <img src="https://pixinvent.com/modern-admin-clean-bootstrap-4-dashboard-html-template/app-assets/images/portrait/small/avatar-s-19.png" alt="Avatar" style="width:100%;">
+  <hr>
   <div class="container">
-    <img src="https://pixinvent.com/modern-admin-clean-bootstrap-4-dashboard-html-template/app-assets/images/portrait/small/avatar-s-19.png" alt="Avatar" style="width:100%;">
-    <div class="">
-      <small>Subject : | Pesan dari : </small> | waktu : WIB
-    </div>
-    <div class="container-fluid">
-      <div class="">
-        <img src="" class="" alt="">
-      </div>
+    <div class="jumbotron" style="background:transparent !important">
+      {{dat.4}}
     </div>
   </div>
+  regrad,
+  <small>nama author</small>
+  <small>support by #YukNgoding and IjabQabul </small>
+  <span class="time-right">{{dat.6}}</span>
 </div>
+
+{% endfor %}
+
 {% endblock %}
